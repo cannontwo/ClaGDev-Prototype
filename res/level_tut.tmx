@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="oc_tileset" tilewidth="32" tileheight="32">
+  <image source="oc_tileset.png" width="320" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="blocked" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt1TEOgzAQRUHD/Q9NS4GM2bXwIuZJ0ybBXzitSZIkSZIkSZIkSZIkKdMWpFy9s90fsluu6Lln/Wmf3rPOeAe+ts/Kvc/ffXdfrN4geu+NPP8bd2T0//Xq7KvvEdkpciYzPoOxzVb/DmxRjS3q8G7UYgsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNoOdDw6pw==
+  </data>
+ </layer>
+</map>

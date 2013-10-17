@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE themes PUBLIC "-//www.matthiasmann.de//TWL-Theme//EN" "http://hg.l33tlabs.org/twl/raw-file/tip/src/de/matthiasmann/twl/theme/theme.dtd">
+<themes>
+    <images file="widgets.png">
+        <area name="box" xywh="1,1,42,34" nocenter="true" splitx="L13,R14" splity="T5,B5"/>
+        <area name="box bg" xywh="44,3,38,30" splitx="L9,R9" splity="T9,B9" border="2"/>
+        <composed name="panel-blue">
+            <alias ref="box bg" tint="#1168CD"/>
+            <alias ref="box" tint="#29CB27"/>
+        </composed>
+        <composed name="panel-red">
+            <alias ref="box bg" tint="#D30A0A"/>
+            <alias ref="box" tint="#29CB27"/>
+        </composed>
+        <select name="button.background">
+            <alias ref="panel-blue" if="pressed" inset="2,2,-2,-2"/>
+            <alias ref="panel-red" if="hover"/>
+            <alias ref="panel-blue"/>
+        </select>
+        <composed name="panel-black">
+            <alias ref="box bg" tint="#000000"/>
+            <alias ref="box" inset="-3"/>
+        </composed>
+        <area name="white" xywh="66,7,1,1"/>
+        <composed name="itemslot.background" sizeOverwriteH="100" sizeOverwriteV="100">
+            <alias ref="panel-black"/>
+            <alias ref="white" if="dropBlocked" tint="#80FF0000"/>
+            <alias ref="white" if="dropOk" tint="#80FFFFFF"/>
+        </composed>
+    </images>
+    <images file="inventoryLabel.png">
+        <area name="inventory" xywh="0,0,400,600"/>
+    </images>
+    <images file="icons.png">
+        <area name="icon.fang" xywh="0,0,29,33"/>
+        <area name="icon.feather" xywh="29,0,32,33"/>
+        <area name="icon.rock" xywh="63,0,31,34"/>
+        <area name="icon.stick" xywh="102,0,29,35"/>
+    </images>
+    <fontDef name="normal" filename="font.fnt" color="#FFFFFF" default="true">
+        <fontParam if="error" color="red"/>
+        <fontParam if="warning" color="orange"/>
+        <fontParam if="disabled" color="gray"/>
+        <fontParam if="textSelection" color="blue"/>
+    </fontDef>
+    <fontDef name="button.font" filename="font.fnt" color="#FFFFFF">
+        <fontParam if="error" color="red"/>
+        <fontParam if="warning" color="orange"/>
+        <fontParam if="disabled" color="gray"/>
+        <fontParam if="textSelection" color="blue"/>
+        <fontParam if="pressed" offsetX="2" offsetY="2"/>
+    </fontDef>
+
+    <inputMapDef name="-defaultInputMap">
+        <action name="selectAll">ctrl A</action>
+        <action name="selectAll">cmd A</action>
+        <action name="cut">ctrl X</action>
+        <action name="cut">cmd X</action>
+        <action name="copy">ctrl C</action>
+        <action name="copy">cmd C</action>
+        <action name="paste">ctrl V</action>
+        <action name="paste">cmd V</action>
+    </inputMapDef>
+
+    <theme name="-defaults">
+        <param name="background"><image>none</image></param>
+        <param name="overlay"><image>none</image></param>
+        <param name="font"><font>normal</font></param>
+        <param name="textAlignment"><enum type="alignment">left</enum></param>
+        <param name="minWidth"><int>0</int></param>
+        <param name="minHeight"><int>0</int></param>
+        <param name="maxWidth"><int>0</int></param>
+        <param name="maxHeight"><int>0</int></param>
+        <param name="inputMap"><inputMap>-defaultInputMap</inputMap></param>
+    </theme>
+
+    <theme name="label" ref="-defaults" allowWildcard="true">
+    </theme>
+    <theme name="state0" ref="-defaults">
+        <theme name="button" ref="-defaults">
+            <param name="background"><image>button.background</image></param>
+            <param name="border"><border>10,0</border></param>
+            <param name="font"><font>button.font</font></param>
+        </theme>
+        <theme name="label" ref="-defaults">
+            <param name="border"><border>10,0</border></param>
+            <param name="background"><image>box</image></param>
+            <param name="overlay"><image>none</image></param>
+        </theme>
+    
+    </theme>
+    <theme name="state1" ref="-defaults">
+        <theme name="inventorypanel" ref="-defaults">
+            <param name="slotSpacing"><int>20</int></param>
+            <theme name="itemslot" ref="-defaults">
+                <param name="icons">
+                    <map>
+                        <param name=""><image>icon.*</image></param>
+                    </map>
+                </param>
+                <param name="background"><image>panel-black</image></param>
+                <param name="minWidth"><int>55</int></param>
+                <param name="maxWidth"><int>55</int></param>
+                <param name="minHeight"><int>55</int></param>
+                <param name="maxHeight"><int>55</int></param>
+            </theme>
+            <param name="minWidth"><int>400</int></param>
+            <param name="maxWidth"><int>400</int></param>
+            <param name="minHeight"><int>601</int></param>
+            <param name="maxHeight"><int>600</int></param>
+            <param name="background"><image>inventory</image></param>
+            <theme name="button" ref="-defaults">
+                <param name="background"><image>panel-black</image></param>
+                <param name="border"><border>10,0</border></param>
+                <param name="font"><font>button.font</font></param>
+            </theme>
+        </theme>
+    
+    </theme>
+
+</themes>

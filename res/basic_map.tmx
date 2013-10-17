@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="35" tilewidth="16" tileheight="16" backgroundcolor="#00aaff">
+ <tileset firstgid="1" name="Basic" tilewidth="16" tileheight="16" spacing="1">
+  <image source="basic_tileset.png" trans="000000" width="306" height="199"/>
+  <tile id="9">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="101">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="181">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="182">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+  <tile id="184">
+   <properties>
+    <property name="blocked" value=""/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="35">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+2UQQ6AIAwEea1P1OgBv6YHTw3F0lYKcTfZazOTFlJCemR5iiAIgiDIv7Le3Zy6d2YvMRzGRrh58re4eTt9yd5zXxEeNTetSzS/156i2Vvcaj6SWXkCH6kH7Qg+mr92JJeSk8XD4nIy1c6TMnEOLS4cu7cH58PtonUnlJnOsLpo96a5q5JD7uTgUXo7lF96X973aHUp3ecb12j7qr0Rjnc0h9qtzcAs9ZnlvaPoTL0ATQyLrlgbAAA=
+  </data>
+ </layer>
+</map>
