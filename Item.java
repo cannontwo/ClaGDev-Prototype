@@ -24,7 +24,7 @@ public class Item extends Entity{
 	public Item() {
 		this.id = 0;
 		try {
-			this.image = new Image(SlimeGame.basePath + "//res//fang.png");
+			this.image = new Image(SlimeGame.basePath + "res\\fang.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -35,7 +35,7 @@ public class Item extends Entity{
 	public Item(Recipe recipe) {
 		this.id = recipe.itemId;
 		try {
-			this.image = new Image(SlimeGame.basePath + "//res//" + recipe.getImageLocation());
+			this.image = new Image(SlimeGame.basePath + "res\\" + recipe.getImageLocation());
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

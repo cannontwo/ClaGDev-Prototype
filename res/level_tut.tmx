@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="oc_tileset" tilewidth="32" tileheight="32">
-  <image source="oc_tileset.png" width="320" height="320"/>
+  <image source="../../../../../../../Cannon_Lewis/ProjectZip/ProjectZip/res/oc_tileset.png" width="320" height="320"/>
   <tile id="0">
    <properties>
     <property name="blocked" value="true"/>
@@ -14,8 +14,8 @@
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="100" height="100">
-  <data encoding="base64" compression="zlib">
-   eJzt1TEOgzAQRUHD/Q9NS4GM2bXwIuZJ0ybBXzitSZIkSZIkSZIkSZIkKdMWpFy9s90fsluu6Lln/Wmf3rPOeAe+ts/Kvc/ffXdfrN4geu+NPP8bd2T0//Xq7KvvEdkpciYzPoOxzVb/DmxRjS3q8G7UYgsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgNoOdDw6pw==
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC+3VMQ6DMBBFQcP9D01LgYzZtfAi5knTJsFfOK1JkiRJkiRJkiRJkiQp0xakXL2z3R+yW67ouWf9aZ/es854B762z8q9z999d1+s3iB67408/xt3ZPT/9ersq+8R2SlyJjM+g7HNVv8ObFGNLerwbtRiCwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA2g6ttJ/mQJwAAA==
   </data>
  </layer>
 </map>
