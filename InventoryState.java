@@ -25,7 +25,7 @@ public class InventoryState extends BasicTWLGameState{
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 		
-		inventoryPanel = new InventoryPanel(inventory);
+		inventoryPanel = new InventoryPanel(inventory, this);
 		
 		rp.add(inventoryPanel);
 		return rp;
@@ -98,6 +98,8 @@ public class InventoryState extends BasicTWLGameState{
 		super.leave(container, game);
 	}
 	
-	
+	public void changeState(){
+		changeState=!changeState;
+	}
 
 }

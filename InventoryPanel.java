@@ -9,6 +9,8 @@ public class InventoryPanel extends Widget {
 
 	private Inventory inventory;
 	
+	private InventoryState invState;
+	
 	private int numSlotsX = 4;
 	private int numSlotsY = 4;
 	private final ItemSlot[] slots;
@@ -21,13 +23,14 @@ public class InventoryPanel extends Widget {
 	private ItemSlot recipeSlot1, recipeSlot2, recipeSlot3, recipeResultSlot;
 	
 	private Button craftButton;
+	private Button closeButton;
 	
 	private RecipeBook recipeBook;
 
-	public InventoryPanel(Inventory inventory) {
+	public InventoryPanel(Inventory inventory, InventoryState state) {
 		recipeBook = new RecipeBook();
 		this.inventory = inventory;
-		
+		this.invState=state;
 		this.slots = new ItemSlot[numSlotsX * numSlotsY];
 		
 		ItemSlot.DragListener listener = new ItemSlot.DragListener() {
@@ -106,6 +109,19 @@ public class InventoryPanel extends Widget {
 			}
 		});
 		add(craftButton);
+		
+		closeButton = new Button();
+		closeButton.setText("Close");
+		closeButton.addCallback(new Runnable() {
+
+			@Override
+			public void run() {
+				getGameState().changeState();
+				
+			}
+			
+		});
+		add(closeButton);
 	}
 	
 	
@@ -154,6 +170,9 @@ public class InventoryPanel extends Widget {
 		
 		craftButton.adjustSize();
 		craftButton.setPosition(getInnerX() + getWidth() / 2 - craftButton.getWidth() / 2, 215);
+		
+		closeButton.adjustSize();
+		closeButton.setPosition(getInnerX()+ getWidth() - closeButton.getWidth() -2*slotSpacing, 50);
 	}
 
 
@@ -230,5 +249,9 @@ public class InventoryPanel extends Widget {
 		for(int i = 0; i < slots.length; i++) {
 			inventory.set(i,slots[i].getItem());
 		}
+	}
+	
+	public InventoryState getGameState(){
+		return invState;
 	}
 }
