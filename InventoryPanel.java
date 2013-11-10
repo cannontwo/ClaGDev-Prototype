@@ -1,6 +1,5 @@
 package com.cannon.basegame;
 
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.matthiasmann.twl.Button;
@@ -220,14 +219,9 @@ public class InventoryPanel extends Widget {
 				dragSlot.findIcon();
 				System.out.println("Dropping");
 			} 
-			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && !dragSlot.equals(dropSlot)){
+			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && !dragSlot.equals(dropSlot) && dropSlot == null){
 				inventory.remove(dragSlot.getItem());
-				try {
-					Entity.getPlayer().throwItem(dragSlot.getItem());
-				} catch (SlickException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Entity.getPlayer().itemsPending.add(dragSlot.getItem());
 				dragSlot.setItem(null);
 				dragSlot.findIcon();
 			}

@@ -43,6 +43,12 @@ public abstract class Entity {
 	//Image to display
 	protected Image image;
 	
+	//List of items to be thrown
+	public ArrayList<Item> itemsPending = new ArrayList<Item>();
+	
+	//Delay so all the items don't get thrown at once
+	private short itemThrowDelay = 0;
+	
 	//Static list of all entities
 	public static ArrayList<Entity> entityList = new ArrayList<Entity>();
 	public static Entity getPlayer(){
@@ -96,6 +102,14 @@ public abstract class Entity {
 			speedY = -maxSpeedY;
 		
 		onMove(speedX, speedY, speedFactor);
+		
+		if(itemsPending.size() > 0 && itemThrowDelay++ % 10 == 0){
+			throwItem();
+			
+		}
+		if(itemThrowDelay > 100){
+			itemThrowDelay = 0;
+		}
 	}
 	
 	protected void stopMove() {
@@ -182,20 +196,29 @@ public abstract class Entity {
 		
 	}
 		
-	public void throwItem(Item thrownItem) throws SlickException{
-		Item item = new Item(thrownItem.getId());
-		item.faceLeft = !this.faceLeft;
-		item.faceRight = !this.faceRight;
-		if(faceLeft){
-			item.setX((int) this.getX() + this.getWidth() + 5);
-			item.setSpeedX(15);
+	public void throwItem() throws SlickException{
+		Item item = new Item(itemsPending.get(0).getId());
+		if(!faceLeft){
+			item.setX((int) this.getX() - this.getWidth() / 2 - 5);
+			item.setSpeedX(-30);
 		}
 		else{
-			item.setX((int) this.getX() - this.getWidth() / 2 - 5);
-			item.setSpeedX(-15);
+			item.setX((int) this.getX() + this.getWidth() + 5);
+			item.setSpeedX(30);
 		}
+		item.setY((int) this.getY() - 5);
 		item.setSpeedY(-15);
-		Item.pendingThrow.add(item);
+		if(item.canBeThrown()){ 
+			Entity.entityList.add(item);
+			itemsPending.remove(0);
+			System.out.println("threw " + item);
+		}
+		
+	}
+	
+	public void throwItem(Item item) throws SlickException {
+		itemsPending.add(item);
+		throwItem();
 	}
 	
 	protected boolean posValid(double newX, double newY) {
