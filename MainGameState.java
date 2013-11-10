@@ -171,21 +171,27 @@ public class MainGameState extends BasicTWLGameState{
 			game.enterState(SlimeGame.INVENTORYSTATE);
 			changeState = false;
 		}
-		if(Projectile.pendingProjectiles.size() > 0 && projectileListDelay++ % 25 == 0){
-			Projectile p=Projectile.pendingProjectiles.get(0);
-			p.faceLeft = !Entity.getPlayer().faceLeft;
-			p.faceRight = !Entity.getPlayer().faceRight;
-			if(p.faceLeft)
-				p.setX((int) Entity.getPlayer().getX() - Entity.getPlayer().getWidth() / 2 - 5);
-			else
-				p.setX((int) Entity.getPlayer().getX() + Entity.getPlayer().getWidth() + 5);
-			p.setY((int) Entity.getPlayer().getY());
-			if(p.canSurvive()){
-				Entity.entityList.add(p);
-				Projectile.pendingProjectiles.remove(0);
+		
+		if(Item.pendingThrow.size() > 0 && projectileListDelay++ % 15 == 0){
+			Item item = Item.pendingThrow.get(0);
+			item.faceLeft = !Entity.getPlayer().faceLeft;
+			item.faceRight = !Entity.getPlayer().faceRight;
+			if(item.faceLeft){
+				item.setX((int) Entity.getPlayer().getX() - Entity.getPlayer().getWidth() / 2 - 5);
+				item.setSpeedX(-15);
+			}else{
+				item.setX((int) Entity.getPlayer().getX() + Entity.getPlayer().getWidth() + 5);
+				item.setSpeedX(15);
 			}
-			if(projectileListDelay > 100)
+			item.setY((int) Entity.getPlayer().getY());
+			if(item.canBeThrown()){ 
+				Entity.entityList.add(item);
+				Item.pendingThrow.remove(0);
+			}
+			
+			if(projectileListDelay > 100){
 				projectileListDelay = 0;
+			}
 		}
 		for(int x = 0; x < Entity.entityList.size(); x++){
 			if(Entity.entityList.get(x).isDead()){
@@ -262,9 +268,6 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_TAB:
 			changeState = true;
-			break;
-		case Input.KEY_G:
-			player.spawnProjectile();
 			break;
 		}
 	}

@@ -1,5 +1,6 @@
 package com.cannon.basegame;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import de.matthiasmann.twl.Button;
@@ -219,9 +220,14 @@ public class InventoryPanel extends Widget {
 				dragSlot.findIcon();
 				System.out.println("Dropping");
 			} 
-			else if(!(contains(evt.getMouseX(), evt.getMouseY()))){
+			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && !dragSlot.equals(dropSlot)){
 				inventory.remove(dragSlot.getItem());
-				Entity.getPlayer().throwItem(Entity.getPlayer(), dragSlot.getItem());
+				try {
+					Entity.getPlayer().throwItem(dragSlot.getItem());
+				} catch (SlickException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				dragSlot.setItem(null);
 				dragSlot.findIcon();
 			}
@@ -265,7 +271,10 @@ public class InventoryPanel extends Widget {
 	
 	private boolean contains(int x, int y){
 		Rectangle rect=new Rectangle(this.getX(),this.getY(), getWidth(), getHeight());
-		System.out.println(rect);
+		System.out.println(rect.getX());
+		System.out.println(rect.getY());
+		System.out.println(rect.getWidth());
+		System.out.println(rect.getHeight());
 		return rect.includes(x, y);
 	}
 	

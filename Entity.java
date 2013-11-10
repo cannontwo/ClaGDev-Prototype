@@ -181,62 +181,21 @@ public abstract class Entity {
 	public void onDeath(){
 		
 	}
-	
-	public void spawnProjectile() {
-		final Entity me=this;
-		Projectile p=null;
-		try {
-			p=new Projectile(){
-				@Override
-				public void setFields() {
-						setOwner(me);	
-						setDamage(20);
-						setSpeedX(50);
-				}
-			};
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+	public void throwItem(Item thrownItem) throws SlickException{
+		Item item = new Item(thrownItem.getId());
+		item.faceLeft = !this.faceLeft;
+		item.faceRight = !this.faceRight;
+		if(faceLeft){
+			item.setX((int) this.getX() + this.getWidth() + 5);
+			item.setSpeedX(15);
 		}
-		if(p!=null) Entity.entityList.add(p);
-	}
-	public void throwItem(Entity owner, Item projectile){
-		final Entity own=owner;
-		final Item item;
-		item=new Item(projectile.getId());
-		Projectile p=null;
-		try {
-			p=new Projectile(){
-				@Override
-				public void setFields() {
-						setOwner(own);	
-						faceLeft = !faceLeft;
-						faceRight = !faceRight; //throw it behind you
-						setDamage(0);
-						setSpeedX(15);
-						setSpeedY(-15);
-						try {
-							setImage(SlimeGame.basePath + "res//" + Item.itemList.get(item.getId()) + ".png");
-						} catch (SlickException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} 
-				}
-				
-				public void onDeath(){
-					item.setX((int)getLastValidX());
-					item.setY((int)getLastValidY());
-					entityList.add(item);
-				}
-				
-				
-			};
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else{
+			item.setX((int) this.getX() - this.getWidth() / 2 - 5);
+			item.setSpeedX(-15);
 		}
-		if(p!=null) Projectile.pendingProjectiles.add(p);
-
+		item.setSpeedY(-15);
+		Item.pendingThrow.add(item);
 	}
 	
 	protected boolean posValid(double newX, double newY) {
@@ -413,4 +372,5 @@ public abstract class Entity {
 	public int getHeight(){
 		return height;
 	}
-}
+	
+	}

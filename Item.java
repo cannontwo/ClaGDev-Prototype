@@ -3,6 +3,7 @@ package com.cannon.basegame;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.newdawn.slick.GameContainer;
@@ -19,6 +20,7 @@ public class Item extends Entity{
 	private int id;
 	private boolean pickedUp = false;
 	public static HashMap<Integer,String> itemList;
+	public static ArrayList<Item> pendingThrow = new ArrayList<Item>();
 	
 	public Item() {
 		this(0);
@@ -107,5 +109,23 @@ public class Item extends Entity{
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean canBeThrown(){
+		try{
+			if(!posValid(x, y)) {
+				return false;
+			}
+		} catch(ArrayIndexOutOfBoundsException e){  //if it's off map
+			return false;
+		}
+		if(getHasGravity() && speedY==0) {
+			return false;
+		}
+		
+		
+		return true;
+		
+	}
+
 
 }
