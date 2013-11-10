@@ -8,6 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Player extends Entity{
 	private Inventory inventory;
+	
 	public Player() {
 		health = 100;
 		width = 64;
@@ -15,7 +16,7 @@ public class Player extends Entity{
 		inventory = new Inventory();
 		
 		try {
-			image = new Image(SlimeGame.basePath + "res\\player.png");
+			image = new Image(SlimeGame.basePath + "res//player.png");
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -29,7 +30,7 @@ public class Player extends Entity{
 		inventory = new Inventory();
 		
 		try {
-			image = new Image(SlimeGame.basePath + "res\\player.png");
+			image = new Image(SlimeGame.basePath + "res//player.png");
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,6 +47,7 @@ public class Player extends Entity{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
+
 	}
 
 
@@ -77,6 +79,8 @@ public class Player extends Entity{
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
+	
+
 	
 	
 }

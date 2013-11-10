@@ -9,7 +9,7 @@ import com.cannon.basegame.not_mine.TWLStateBasedGame;
 
 
 public class SlimeGame extends TWLStateBasedGame{
-	public static final String basePath = "src\\com\\cannon\\basegame\\";
+	public static final String basePath = "src//com//cannon//basegame//";
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	

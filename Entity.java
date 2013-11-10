@@ -1,5 +1,4 @@
 package com.cannon.basegame;
-
 import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
@@ -46,6 +45,13 @@ public abstract class Entity {
 	
 	//Static list of all entities
 	public static ArrayList<Entity> entityList = new ArrayList<Entity>();
+	public static Entity getPlayer(){
+		for(Entity entity: entityList){
+			if(entity instanceof Player)
+				return entity;
+		}
+		return null;
+	}
 	
 	public abstract void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException;
 	public abstract void init(GameContainer container, StateBasedGame game) throws SlickException;
@@ -172,7 +178,67 @@ public abstract class Entity {
 		}
 	}
 
+	public void onDeath(){
+		
+	}
+	
+	public void spawnProjectile() {
+		final Entity me=this;
+		Projectile p=null;
+		try {
+			p=new Projectile(){
+				@Override
+				public void setFields() {
+						setOwner(me);	
+						setDamage(20);
+						setSpeedX(50);
+				}
+			};
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(p!=null) Entity.entityList.add(p);
+	}
+	public void throwItem(Entity owner, Item projectile){
+		final Entity own=owner;
+		final Item item;
+		item=new Item(projectile.getId());
+		Projectile p=null;
+		try {
+			p=new Projectile(){
+				@Override
+				public void setFields() {
+						setOwner(own);	
+						faceLeft = !faceLeft;
+						faceRight = !faceRight; //throw it behind you
+						setDamage(0);
+						setSpeedX(15);
+						setSpeedY(-15);
+						try {
+							setImage(SlimeGame.basePath + "res//" + Item.itemList.get(item.getId()) + ".png");
+						} catch (SlickException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+				}
+				
+				public void onDeath(){
+					item.setX((int)getLastValidX());
+					item.setY((int)getLastValidY());
+					entityList.add(item);
+				}
+				
+				
+			};
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(p!=null) Projectile.pendingProjectiles.add(p);
 
+	}
+	
 	protected boolean posValid(double newX, double newY) {
 		boolean returnBool = true;
 		
@@ -257,6 +323,7 @@ public abstract class Entity {
 		return true;
 	}
 	
+	
 	public double getX() {
 		return x;
 	}
@@ -335,5 +402,15 @@ public abstract class Entity {
 	public void pickUp(Item item) {
 	}
 	public void setId(int id){
+	}
+	public int getId(){
+		return -1;
+	}
+	
+	public int getWidth(){
+		return width;
+	}
+	public int getHeight(){
+		return height;
 	}
 }

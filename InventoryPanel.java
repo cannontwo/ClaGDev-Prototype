@@ -1,5 +1,7 @@
 package com.cannon.basegame;
 
+import org.newdawn.slick.geom.Rectangle;
+
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.Event;
 import de.matthiasmann.twl.ThemeInfo;
@@ -172,7 +174,7 @@ public class InventoryPanel extends Widget {
 		craftButton.setPosition(getInnerX() + getWidth() / 2 - craftButton.getWidth() / 2, 215);
 		
 		closeButton.adjustSize();
-		closeButton.setPosition(getInnerX()+ getWidth() - closeButton.getWidth() -2*slotSpacing, 50);
+		closeButton.setPosition(getInnerX()+ getWidth() - craftButton.getWidth() -2*slotSpacing, 50);
 	}
 
 
@@ -216,6 +218,12 @@ public class InventoryPanel extends Widget {
 				dropSlot.findIcon();
 				dragSlot.findIcon();
 				System.out.println("Dropping");
+			} 
+			else if(!(contains(evt.getMouseX(), evt.getMouseY()))){
+				inventory.remove(dragSlot.getItem());
+				Entity.getPlayer().throwItem(Entity.getPlayer(), dragSlot.getItem());
+				dragSlot.setItem(null);
+				dragSlot.findIcon();
 			}
 			setDropSlot(null);
 			dragSlot = null;
@@ -254,4 +262,12 @@ public class InventoryPanel extends Widget {
 	public InventoryState getGameState(){
 		return invState;
 	}
+	
+	private boolean contains(int x, int y){
+		Rectangle rect=new Rectangle(this.getX(),this.getY(), getWidth(), getHeight());
+		System.out.println(rect);
+		return rect.includes(x, y);
+	}
+	
+	
 }

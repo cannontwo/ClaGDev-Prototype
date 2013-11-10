@@ -8,7 +8,7 @@ public class Area {
 	private static Area areaControl;
 	private TiledMap map;
 	private boolean[][] blockedArray;
-	private static String levelFile = SlimeGame.basePath+"res\\level_tut.tmx";
+	private static String levelFile = SlimeGame.basePath+"res//level_tut.tmx";
 	
 	public Area() {
 		try {

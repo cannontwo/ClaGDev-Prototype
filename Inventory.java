@@ -35,4 +35,24 @@ public class Inventory {
 	public void set(int i, Item item) {
 		items[i] = item;
 	}
+	
+	public void remove(Item i){
+		if(indexOf(i)==-1)
+			return;
+		remove(indexOf(i));
+	}
+	
+	public void remove(int index){
+		set(index, null);
+	}
+	
+	public int indexOf(Item i){
+		int num=0;
+		for(;num<items.length; num++){
+			if(i==items[num])
+				return num;
+		}
+		return -1;
+		
+	}
 }

@@ -33,6 +33,8 @@ public class MainGameState extends BasicTWLGameState{
 	private Label selectionLabel;
 	private Label displayLabel;
 	private Image selectionImage;
+	
+	private short projectileListDelay = 0;
 
 	private boolean changeState = false;
 	private boolean firstTime = true;
@@ -169,6 +171,31 @@ public class MainGameState extends BasicTWLGameState{
 			game.enterState(SlimeGame.INVENTORYSTATE);
 			changeState = false;
 		}
+		if(Projectile.pendingProjectiles.size() > 0 && projectileListDelay++ % 25 == 0){
+			Projectile p=Projectile.pendingProjectiles.get(0);
+			p.faceLeft = !Entity.getPlayer().faceLeft;
+			p.faceRight = !Entity.getPlayer().faceRight;
+			if(p.faceLeft)
+				p.setX((int) Entity.getPlayer().getX() - Entity.getPlayer().getWidth() / 2 - 5);
+			else
+				p.setX((int) Entity.getPlayer().getX() + Entity.getPlayer().getWidth() + 5);
+			p.setY((int) Entity.getPlayer().getY());
+			if(p.canSurvive()){
+				Entity.entityList.add(p);
+				Projectile.pendingProjectiles.remove(0);
+			}
+			if(projectileListDelay > 100)
+				projectileListDelay = 0;
+		}
+		for(int x = 0; x < Entity.entityList.size(); x++){
+			if(Entity.entityList.get(x).isDead()){
+				if(!(Entity.entityList.get(x) instanceof Player)){
+					Entity.entityList.get(x).onDeath();
+					Entity.entityList.remove(x--);
+				}
+				else; //what do i do when the player dies?
+			}
+		}
 	}
 
 	@Override
@@ -235,6 +262,9 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_TAB:
 			changeState = true;
+			break;
+		case Input.KEY_G:
+			player.spawnProjectile();
 			break;
 		}
 	}
