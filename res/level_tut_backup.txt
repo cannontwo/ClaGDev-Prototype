@@ -1,0 +1,21 @@
+Player X=500
+Player Y=700
+
+Player Tile= (8,20)
+
+Entity Type=Item
+Entity Id=3
+Entity Tile= (3,5)
+add
+
+Entity Type=Item
+Entity Id=2
+Entity X=500
+Entity Y=700
+add
+
+Entity Type=Item
+Entity Id=being stupid here won't crash the game
+add
+
+{"playerX":500,"playerY":700,"entitityList":{"type":"item","id":3,"entityX":100,"entityY":200}}

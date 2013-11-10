@@ -8,11 +8,11 @@ public class Area {
 	private static Area areaControl;
 	private TiledMap map;
 	private boolean[][] blockedArray;
+	private static String levelFile = SlimeGame.basePath+"res\\level_tut.tmx";
 	
 	public Area() {
 		try {
-			map = new TiledMap(SlimeGame.basePath + "res\\level_tut.tmx");
-			System.out.println(SlimeGame.class.getResource("res\\level_tut.tmx"));
+			map = new TiledMap(levelFile);
 			updateBlocked(0);
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -53,5 +53,9 @@ public class Area {
 
 	public boolean getTileBlocked(int iX, int iY) {
 		return blockedArray[iX][iY];
+	}
+	
+	public String getLevelDataFile() {
+		return levelFile;
 	}
 }

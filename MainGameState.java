@@ -100,30 +100,18 @@ public class MainGameState extends BasicTWLGameState{
 		container.getGraphics().setBackground(new Color(0,100,255));
 		Area.init();
 		Item.initList();
+		
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
-		player = new Player(0,700);
+		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
+		
+		player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
 		Entity.entityList.add(player);
 		
-		Item fang = new Item(0);
-		fang.setX(100);
-		fang.setY(700);
-		Entity.entityList.add(fang);
+		for(Entity entity : levelData.getEntities()){
+			Entity.entityList.add(entity);
+		}
 		
-		Item stick = new Item(1);
-		stick.setX(150);
-		stick.setY(650);
-		Entity.entityList.add(stick);
-		
-		Item rock = new Item(2);
-		rock.setX(200);
-		rock.setY(600);
-		Entity.entityList.add(rock);
-		
-		Item feather = new Item(3);
-		feather.setX(250);
-		feather.setY(550);
-		Entity.entityList.add(feather);
 		mapWidth = map.getWidth() * map.getTileWidth();
 		mapHeight = map.getHeight() * map.getTileHeight();
 		camera = new Camera(map, mapWidth, mapHeight);
@@ -273,7 +261,7 @@ public class MainGameState extends BasicTWLGameState{
 			grabbedTileId = Area.getAreaControl().getMap(0).getTileId((int)((x + camera.getX()) / TILE_SIZE), (int)((y + camera.getY()) / TILE_SIZE), 0);
 			try {
 				if(grabbedTileId != 0) {
-					selectionImage = new Image(SlimeGame.basePath + "res\\tile" + grabbedTileId + ".png");
+					selectionImage = new Image(SlimeGame.basePath + "res//tile" + grabbedTileId + ".png");
 				}
 			} catch (SlickException e) {
 				// TODO Auto-generated catch block

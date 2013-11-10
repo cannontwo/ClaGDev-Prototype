@@ -17,45 +17,29 @@ import com.google.gson.reflect.TypeToken;
 public class Item extends Entity{
 	
 	private int id;
-	private Image image;
 	private boolean pickedUp = false;
 	public static HashMap<Integer,String> itemList;
 	
 	public Item() {
-		this.id = 0;
-		try {
-			this.image = new Image(SlimeGame.basePath + "res\\fang.png");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		this(0);
+	}
+	
+	public Item(Recipe recipe) {
+		this(recipe.itemId);
+	}  
+	
+	public Item(int id) {
+		setId(id);
 		width = 32;
 		height = 32;
 	}
 	
-	public Item(Recipe recipe) {
-		this.id = recipe.itemId;
-		try {
-			this.image = new Image(SlimeGame.basePath + "res\\" + recipe.getImageLocation());
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Item(int id, int x, int y) {
+		setId(id);
 		width = 32;
 		height = 32;
-	}  
-	
-	public Item(int id) {
-		this.id = id;
-		try {
-			if(Item.itemList.get(id) != null) {
-				
-				this.image = new Image(SlimeGame.basePath + "res\\" + Item.itemList.get(id) + ".png");
-			}
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-		width = 32;
-		height = 32;
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override
@@ -76,7 +60,7 @@ public class Item extends Entity{
 		Gson myGson = new Gson();
 		
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("src\\" + SlimeGame.basePath + "data\\items.json"));			itemList = myGson.fromJson(reader.readLine(), mapType);
+			BufferedReader reader = new BufferedReader(new FileReader(SlimeGame.basePath + "data//items.json"));			itemList = myGson.fromJson(reader.readLine(), mapType);
 			reader.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -110,6 +94,18 @@ public class Item extends Entity{
 	@Override
 	public String toString() {
 		return getName();
+	}
+	
+	public void setId(int id){
+		this.id = id;
+		try {
+			if(Item.itemList.get(id) != null) {
+				
+				this.image = new Image(SlimeGame.basePath + "res//" + Item.itemList.get(id) + ".png");
+			}
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

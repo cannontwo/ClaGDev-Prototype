@@ -1,4 +1,5 @@
 package com.cannon.basegame;
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
@@ -332,5 +333,7 @@ public abstract class Entity {
 		this.dead = dead;
 	}
 	public void pickUp(Item item) {
+	}
+	public void setId(int id){
 	}
 }
