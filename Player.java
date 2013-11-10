@@ -77,6 +77,14 @@ public class Player extends Entity{
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
+
+	public void setTurningRight(boolean b) {
+		turningRight = b;
+	}
+	
+	public void setTurningLeft(boolean b) {
+		turningLeft = b;
+	}
 	
 	
 }
