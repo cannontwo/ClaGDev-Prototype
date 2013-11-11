@@ -274,7 +274,7 @@ public abstract class Entity {
 		return returnBool ;
 	}
 	
-	private boolean PosValidEntity(Entity entity, int newX, int newY) {
+	protected boolean PosValidEntity(Entity entity, int newX, int newY) {
 		
 		if(this != entity && entity != null && !entity.isDead() && entity.canCollide && entity.collides(newX, newY, width, height)) {
 			
@@ -287,7 +287,7 @@ public abstract class Entity {
 		return true;
 	}
 	
-	private boolean collides(int oX, int oY, int oW, int oH) {
+	protected boolean collides(int oX, int oY, int oW, int oH) {
 		int left1, left2;
 	    int right1, right2;
 	    int top1, top2;

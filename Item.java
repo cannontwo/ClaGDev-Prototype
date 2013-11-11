@@ -72,6 +72,20 @@ public class Item extends Entity{
 		}
 		System.out.println();
 	}
+	
+	@Override
+	protected boolean PosValidEntity(Entity entity, int newX, int newY) {
+		
+		if(this != entity && entity != null && !entity.isDead() && entity.canCollide && entity.collides(newX, newY, width, height)) {
+			
+			EntityCollision entityCol = new EntityCollision(this, entity);
+			EntityCollision.entityCollisionList.push(entityCol);
+			
+			return true;
+		}
+		
+		return true;
+	};
 
 	@Override
 	public boolean onCollision(Entity entity) {
