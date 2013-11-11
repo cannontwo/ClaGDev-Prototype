@@ -19,8 +19,10 @@ public abstract class Entity {
 	protected double speedX = 0;
 	protected double speedY = 0;
 	//Maximum Speed
-	protected double maxSpeedX = 35;
-	protected double maxSpeedY = 30;
+	protected double maxSpeedX = 27;
+	protected double maxSpeedY = 35;
+	//jumpTime controls Jump speed and max time
+	protected double jumpTime = 0;
 	//Acceleration
 	protected double accelerationX = 0;
 	protected double accelerationY = 0;
@@ -42,6 +44,9 @@ public abstract class Entity {
 	protected int health = 20;
 	//Image to display
 	protected Image image;
+	//Faster turn than run
+	protected boolean turningLeft = false;
+	protected boolean turningRight = false;
 	
 	//List of items to be thrown
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
@@ -74,19 +79,37 @@ public abstract class Entity {
 		if(moveLeft == false && moveRight == false) {
 			stopMove();
 		}
-				
+		
 		if(moveLeft) {
 			faceRight = false;
 			faceLeft = true;
-			accelerationX = -9f;
+			accelerationX = -6f;
+			if(turningLeft && speedX >= 0) {
+				accelerationX = -11;
+			} else {
+				turningLeft = false;
+			}
 		} else if(moveRight) {
 			faceLeft = false;
 			faceRight = true;
-			accelerationX = 9f;
+			accelerationX = 6f;
+			if(turningRight && speedX <= 0) {
+				accelerationX = 11;
+			} else {
+				turningRight = false;
+			}
 		}
 				
 		if(hasGravity) {
 			accelerationY = 6f;
+		}
+		
+		if(jumpTime > 0) {
+			maxSpeedY = 18;
+			accelerationY -= jumpTime * (500 / 12);
+			jumpTime -= delta;
+		} else {
+			maxSpeedY = 40;
 		}
 				
 		speedX += accelerationX * speedFactor;
@@ -114,11 +137,11 @@ public abstract class Entity {
 	
 	protected void stopMove() {
 		if(speedX > 0) {
-			accelerationX = -8f;
+			accelerationX = -11f;
 		}
 		
 		if(speedX < 0) {
-			accelerationX = 8f;
+			accelerationX = 11f;
 		}
 		
 		if(speedX < 2.0f && speedX > -2.0f) {
@@ -298,14 +321,17 @@ public abstract class Entity {
 	public boolean jump() {
 		if(!canJump) {
 			return false;
+		} else if(jumpTime <= 0) {
+			jumpTime = 300;
 		}
 		
-		speedY = -maxSpeedY;
 		
 		return true;
 	}
 	
-	
+	public void stopJump() {
+		jumpTime = 0;
+	}
 	public double getX() {
 		return x;
 	}

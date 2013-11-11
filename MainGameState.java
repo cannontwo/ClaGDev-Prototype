@@ -233,18 +233,25 @@ public class MainGameState extends BasicTWLGameState{
 		switch(key) {
 		case Input.KEY_A:
 			player.moveLeft = false;
+			player.setTurningRight(true);
 			break;
 		case Input.KEY_D:
 			player.moveRight = false;
+			player.setTurningLeft(true);
 			break;
 		case Input.KEY_LEFT:
 			player.moveLeft = false;
+			player.setTurningRight(true);
 			break;
 		case Input.KEY_RIGHT:
 			player.moveRight = false;
+			player.setTurningLeft(true);
 			break;
 		case Input.KEY_TAB:
 			changeState = true;
+			break;
+		case Input.KEY_SPACE:
+			player.stopJump();
 			break;
 		}
 	}
