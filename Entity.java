@@ -264,10 +264,10 @@ public abstract class Entity {
 		}
 		
 		if(canCollide) {
-			for(int i = 0; i < entityList.size(); i++) {
-				if(!PosValidEntity(entityList.get(i), (int)newX, (int)newY)) {
+			for(Entity entity : entityList) {
+				if(!PosValidEntity(entity, (int)newX, (int)newY) && !(entity instanceof Item)) {
 					returnBool = false;
-				}
+				} 
 			}
 		}
 		
