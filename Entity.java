@@ -126,7 +126,7 @@ public abstract class Entity {
 		
 		onMove(speedX, speedY, speedFactor);
 		
-		if(itemsPending.size() > 0 && itemThrowDelay++ % 10 == 0){
+		if(itemsPending.size() > 0 && itemThrowDelay++ % 5 == 0){
 			throwItem();
 			
 		}
