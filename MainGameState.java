@@ -35,6 +35,9 @@ public class MainGameState extends BasicTWLGameState{
 	private Image selectionImage;
 	private boolean changeState = false;
 	private boolean firstTime = true;
+
+	//Controls quitting game
+	private boolean exitFlag = false;
 	
 	public static RecipeBook recipeBook;
 	
@@ -145,6 +148,10 @@ public class MainGameState extends BasicTWLGameState{
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		if(exitFlag) {
+			container.exit();
+		}
+		
 		for(int num = 0; num < Entity.entityList.size(); num++) {
 			Entity.entityList.get(num).update(container, game, delta);
 		}
@@ -222,6 +229,9 @@ public class MainGameState extends BasicTWLGameState{
 			newItem.setX(rand.nextInt(Area.getAreaControl().getMap(0).getWidth() * MainGameState.TILE_SIZE));
 			newItem.setY(10);
 			Entity.entityList.add(newItem);
+			break;
+		case Input.KEY_ESCAPE:
+			exitFlag  = true;
 			break;
 		}
 	}

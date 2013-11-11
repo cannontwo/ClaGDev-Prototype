@@ -19,6 +19,7 @@ public class InventoryState extends BasicTWLGameState{
 	private InventoryPanel inventoryPanel;
 	private Inventory inventory;
 	private boolean firstTime = true;
+	private boolean exitFlag = false;
 
 
 	@Override
@@ -55,6 +56,9 @@ public class InventoryState extends BasicTWLGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
+		if(exitFlag) {
+			container.exit();
+		}
 		if(changeState) {
 			game.enterState(SlimeGame.MAINGAMESTATE);
 			changeState = false;
@@ -66,6 +70,16 @@ public class InventoryState extends BasicTWLGameState{
 		return SlimeGame.INVENTORYSTATE;
 	}
 
+	@Override
+	public void keyPressed(int key, char c) {
+		super.keyPressed(key, c);
+		
+		switch(key) {
+		case Input.KEY_ESCAPE:
+			exitFlag  = true;
+			break;
+		}
+	};
 
 	@Override
 	public void keyReleased(int key, char c) {
