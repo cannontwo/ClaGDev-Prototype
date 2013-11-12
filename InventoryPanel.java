@@ -107,6 +107,8 @@ public class InventoryPanel extends Widget {
 						recipeSlot3.findIcon();
 					}
 				} catch(NullPointerException e) {
+				} catch(RuntimeException e){ //stops crash if recipe doesn't exist
+					
 				}
 			}
 		});
@@ -268,5 +270,27 @@ public class InventoryPanel extends Widget {
 		return rect.contains(x, y);
 	}
 	
+	public void clearRecipeSlots(){
+		if(recipeSlot1.getItem() != null){
+			Entity.getPlayer().itemsPending.add(recipeSlot1.getItem());
+			recipeSlot1.setItem(null);
+			recipeSlot1.findIcon();
+		}
+		if(recipeSlot2.getItem() != null){
+			Entity.getPlayer().itemsPending.add(recipeSlot2.getItem());
+			recipeSlot2.setItem(null);
+			recipeSlot2.findIcon();
+		}
+		if(recipeSlot3.getItem() != null){
+			Entity.getPlayer().itemsPending.add(recipeSlot3.getItem());
+			recipeSlot3.setItem(null);
+			recipeSlot3.findIcon();
+		}
+		if(recipeResultSlot.getItem() != null){
+			Entity.getPlayer().itemsPending.add(recipeResultSlot.getItem());
+			recipeResultSlot.setItem(null);
+			recipeResultSlot.findIcon();
+		}
+	}
 	
 }

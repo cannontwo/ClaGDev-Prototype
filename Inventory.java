@@ -8,13 +8,14 @@ public class Inventory {
 		items = new Item[16];
 	}
 	
-	public void add(Item item) {
+	public boolean add(Item item) {
 		for(int i = 0; i < items.length; i++) {
 			if(items[i] == null) {
 				items[i] = item;
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public Item get(int index) {
