@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -54,7 +55,7 @@ public class MainGameState extends BasicTWLGameState{
 		posButton.setText("CurrentPos");
 		posButton.addCallback(new Runnable() {
 			public void run() {
-				displayLabel.setText("Player X: " + (player.x / 32) + ", Player Y: " + (player.y / 32));
+				displayLabel.setText("Player X: " + (player.x) + ", Player Y: " + (player.y));
 				posButton.giveupKeyboardFocus();
 			}
 		});
@@ -268,7 +269,7 @@ public class MainGameState extends BasicTWLGameState{
 
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-		if(grabbedTileId != 99) {
+		if(grabbedTileId != 99 && !player.getSpace().intersects(new Rectangle(newx + camera.getX() - (TILE_SIZE / 2), newy + camera.getY() - (TILE_SIZE / 2), TILE_SIZE, TILE_SIZE))) {
 			Area.getAreaControl().getMap(0).setTileId((int)((newx + camera.getX()) / TILE_SIZE), (int)((newy + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 			Area.getAreaControl().updateBlocked(0);
 		}
@@ -296,10 +297,11 @@ public class MainGameState extends BasicTWLGameState{
 			}
 			
 		} else if(button == Input.MOUSE_LEFT_BUTTON) {
-			if(grabbedTileId != 99) {
+			if(grabbedTileId != 99 && !player.getSpace().intersects(new Rectangle(x + camera.getX() - (TILE_SIZE / 2), y + camera.getY() - (TILE_SIZE / 2), TILE_SIZE, TILE_SIZE))) {
 				Area.getAreaControl().getMap(0).setTileId((int)((x + camera.getX()) / TILE_SIZE), (int)((y + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 				Area.getAreaControl().updateBlocked(0);
 			}
+			System.out.println("X:" + x + "Y:" + y + "width:" + TILE_SIZE);
 		}
 	}
 

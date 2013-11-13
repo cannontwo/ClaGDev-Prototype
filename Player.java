@@ -3,6 +3,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -86,6 +87,10 @@ public class Player extends Entity{
 	
 	public void setTurningLeft(boolean b) {
 		turningLeft = b;
+	}
+	
+	public Rectangle getSpace() {
+		return new Rectangle(x - MainGameState.TILE_SIZE, y - MainGameState.TILE_SIZE, width + MainGameState.TILE_SIZE, height + MainGameState.TILE_SIZE);
 	}
 	
 
