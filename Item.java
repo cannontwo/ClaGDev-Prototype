@@ -93,7 +93,6 @@ public class Item extends Entity{
 			entity.pickUp(this);
 			Entity.entityList.remove(this);
 			pickedUp = true;
-			System.out.println("" + this + " has been picked up");
 		}
 		return true;
 	}

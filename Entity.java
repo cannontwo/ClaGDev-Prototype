@@ -126,7 +126,7 @@ public abstract class Entity {
 		
 		onMove(speedX, speedY, speedFactor);
 		
-		if(itemsPending.size() > 0 && itemThrowDelay++ % 10 == 0){
+		if(itemsPending.size() > 0 && itemThrowDelay++ % 5 == 0){
 			throwItem();
 			
 		}
@@ -234,15 +234,10 @@ public abstract class Entity {
 		if(item.canBeThrown()){ 
 			Entity.entityList.add(item);
 			itemsPending.remove(0);
-			System.out.println("threw " + item);
 		}
 		
 	}
-	
-	public void throwItem(Item item) throws SlickException {
-		itemsPending.add(item);
-		throwItem();
-	}
+
 	
 	protected boolean posValid(double newX, double newY) {
 		boolean returnBool = true;

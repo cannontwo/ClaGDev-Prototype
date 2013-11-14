@@ -1,6 +1,6 @@
 package com.cannon.basegame;
 
-import org.newdawn.slick.geom.Rectangle;
+import java.awt.Rectangle;
 
 import de.matthiasmann.twl.Button;
 import de.matthiasmann.twl.Event;
@@ -107,6 +107,8 @@ public class InventoryPanel extends Widget {
 						recipeSlot3.findIcon();
 					}
 				} catch(NullPointerException e) {
+				} catch(RuntimeException e){ //stops crash if recipe doesn't exist
+					
 				}
 			}
 		});
@@ -219,7 +221,7 @@ public class InventoryPanel extends Widget {
 				dragSlot.findIcon();
 				System.out.println("Dropping");
 			} 
-			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && !dragSlot.equals(dropSlot) && dropSlot == null){
+			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && dropSlot == null){
 				inventory.remove(dragSlot.getItem());
 				Entity.getPlayer().itemsPending.add(dragSlot.getItem());
 				dragSlot.setItem(null);
@@ -227,6 +229,7 @@ public class InventoryPanel extends Widget {
 			}
 			setDropSlot(null);
 			dragSlot = null;
+			leave();
 		}
 	}
 
@@ -247,6 +250,7 @@ public class InventoryPanel extends Widget {
 		for(int i = 0; i < slots.length; i++) {
 			try {
 				slots[i].setItem(this.inventory.get(i));
+				slots[i].findIcon();
 			} catch(NullPointerException e) {
 				slots[i].setItem(new Item());
 			}
@@ -265,12 +269,40 @@ public class InventoryPanel extends Widget {
 	
 	private boolean contains(int x, int y){
 		Rectangle rect=new Rectangle(this.getX(),this.getY(), getWidth(), getHeight());
-		System.out.println(rect.getX());
-		System.out.println(rect.getY());
-		System.out.println(rect.getWidth());
-		System.out.println(rect.getHeight());
-		return rect.includes(x, y);
+		return rect.contains(x, y);
 	}
 	
+	public void clearRecipeSlots(){
+		if(recipeSlot1.getItem() != null){
+			if(!inventory.add(recipeSlot1.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot1.getItem());
+			}
+			recipeSlot1.setItem(null);
+			recipeSlot1.findIcon();
+		}
+		if(recipeSlot2.getItem() != null){
+			if(!inventory.add(recipeSlot2.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot2.getItem());
+			}
+			recipeSlot2.setItem(null);
+			recipeSlot2.findIcon();
+		}
+		if(recipeSlot3.getItem() != null){
+			if(!inventory.add(recipeSlot3.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot3.getItem());
+			}
+			recipeSlot3.setItem(null);
+			recipeSlot3.findIcon();
+		}
+		if(recipeResultSlot.getItem() != null){
+			if(!inventory.add(recipeResultSlot.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeResultSlot.getItem());
+			}
+			recipeResultSlot.setItem(null);
+			recipeResultSlot.findIcon();
+		}
+		updateInventory();
+		
+	}
 	
 }

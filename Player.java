@@ -69,7 +69,9 @@ public class Player extends Entity{
 	
 	@Override
 	public void pickUp(Item item) {
-		inventory.add(item);
+		if(!inventory.add(item)){
+			itemsPending.add(item);
+		}
 	}
 
 	public Inventory getInventory() {

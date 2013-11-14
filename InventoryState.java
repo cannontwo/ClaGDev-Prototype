@@ -87,7 +87,7 @@ public class InventoryState extends BasicTWLGameState{
 		
 		switch(key) {
 		case Input.KEY_TAB:
-			changeState = true;
+			changeState();
 			break;
 		}
 	}
@@ -113,6 +113,7 @@ public class InventoryState extends BasicTWLGameState{
 	}
 	
 	public void changeState(){
+		inventoryPanel.clearRecipeSlots();
 		changeState=!changeState;
 	}
 
