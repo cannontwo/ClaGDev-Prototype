@@ -229,6 +229,7 @@ public class InventoryPanel extends Widget {
 			}
 			setDropSlot(null);
 			dragSlot = null;
+			leave();
 		}
 	}
 
@@ -249,6 +250,7 @@ public class InventoryPanel extends Widget {
 		for(int i = 0; i < slots.length; i++) {
 			try {
 				slots[i].setItem(this.inventory.get(i));
+				slots[i].findIcon();
 			} catch(NullPointerException e) {
 				slots[i].setItem(new Item());
 			}
@@ -272,25 +274,35 @@ public class InventoryPanel extends Widget {
 	
 	public void clearRecipeSlots(){
 		if(recipeSlot1.getItem() != null){
-			Entity.getPlayer().itemsPending.add(recipeSlot1.getItem());
+			if(!inventory.add(recipeSlot1.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot1.getItem());
+			}
 			recipeSlot1.setItem(null);
 			recipeSlot1.findIcon();
 		}
 		if(recipeSlot2.getItem() != null){
-			Entity.getPlayer().itemsPending.add(recipeSlot2.getItem());
+			if(!inventory.add(recipeSlot2.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot2.getItem());
+			}
 			recipeSlot2.setItem(null);
 			recipeSlot2.findIcon();
 		}
 		if(recipeSlot3.getItem() != null){
-			Entity.getPlayer().itemsPending.add(recipeSlot3.getItem());
+			if(!inventory.add(recipeSlot3.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeSlot3.getItem());
+			}
 			recipeSlot3.setItem(null);
 			recipeSlot3.findIcon();
 		}
 		if(recipeResultSlot.getItem() != null){
-			Entity.getPlayer().itemsPending.add(recipeResultSlot.getItem());
+			if(!inventory.add(recipeResultSlot.getItem())){
+				Entity.getPlayer().itemsPending.add(recipeResultSlot.getItem());
+			}
 			recipeResultSlot.setItem(null);
 			recipeResultSlot.findIcon();
 		}
+		updateInventory();
+		
 	}
 	
 }
