@@ -15,6 +15,7 @@ public class SlimeGame extends TWLStateBasedGame{
 	
 	public static final int MAINGAMESTATE = 0;
 	public static final int INVENTORYSTATE = 1;
+	public static final int PAUSESTATE = 2;
 	
 	public SlimeGame() {
 		super("Slime Game");
@@ -38,6 +39,7 @@ public class SlimeGame extends TWLStateBasedGame{
 	public void initStatesList(GameContainer container) throws SlickException {
 		addState(new MainGameState()); //Adds main game state
 		addState(new InventoryState());
+		addState(new PauseState());
 		
 	}
 

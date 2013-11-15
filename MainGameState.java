@@ -36,6 +36,7 @@ public class MainGameState extends BasicTWLGameState{
 	private Image selectionImage;
 	private boolean changeState = false;
 	private boolean firstTime = true;
+	private boolean paused = false;
 
 	//Controls quitting game
 	private boolean exitFlag = false;
@@ -175,6 +176,9 @@ public class MainGameState extends BasicTWLGameState{
 		if(changeState) {
 			game.enterState(SlimeGame.INVENTORYSTATE);
 			changeState = false;
+		} else if(paused){
+			paused = false;
+			game.enterState(SlimeGame.PAUSESTATE);
 		}
 		
 
@@ -263,6 +267,9 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_SPACE:
 			player.stopJump();
+			break;
+		case Input.KEY_P:
+			paused = true;
 			break;
 		}
 	}
