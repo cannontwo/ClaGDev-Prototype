@@ -1,6 +1,7 @@
 package com.cannon.basegame;
 
 
+import java.util.HashMap;
 import java.util.Random;
 
 import org.newdawn.slick.Color;
@@ -36,9 +37,10 @@ public class MainGameState extends BasicTWLGameState{
 	private Image selectionImage;
 	private boolean changeState = false;
 	private boolean firstTime = true;
-
 	//Controls quitting game
 	private boolean exitFlag = false;
+	//Used to save map changes
+	private static HashMap<int[],Integer> changedTileList;
 	
 	public static RecipeBook recipeBook;
 	
@@ -94,11 +96,11 @@ public class MainGameState extends BasicTWLGameState{
 		selectionLabel.setPosition(SlimeGame.WIDTH - selectionLabel.getWidth() - 15, 100);
 		displayLabel.adjustSize();
 		displayLabel.setPosition((SlimeGame.WIDTH / 2) - (displayLabel.getWidth() / 2), SlimeGame.HEIGHT - 50);
-		
 	}
 
 	@Override 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		changedTileList = new HashMap<int[],Integer>();
 		
 		container.getGraphics().setBackground(new Color(0,100,255));
 		Area.init();
@@ -232,7 +234,8 @@ public class MainGameState extends BasicTWLGameState{
 			Entity.entityList.add(newItem);
 			break;
 		case Input.KEY_ESCAPE:
-			exitFlag  = true;
+			exitFlag = true;
+			Area.getAreaControl().saveMap(changedTileList);
 			break;
 		}
 	}
@@ -272,6 +275,13 @@ public class MainGameState extends BasicTWLGameState{
 		if(grabbedTileId != 99 && !player.getSpace().intersects(new Rectangle(newx + camera.getX() - (TILE_SIZE / 2), newy + camera.getY() - (TILE_SIZE / 2), TILE_SIZE, TILE_SIZE))) {
 			Area.getAreaControl().getMap(0).setTileId((int)((newx + camera.getX()) / TILE_SIZE), (int)((newy + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 			Area.getAreaControl().updateBlocked(0);
+			
+			int[] temp = new int[2];
+			temp[0] = (int)((newx + camera.getX()) / TILE_SIZE);
+			temp[1] = (int)((newy + camera.getY()) / TILE_SIZE);
+			
+			changedTileList.put(temp, (Integer)grabbedTileId);
+			
 		}
 	}
 
@@ -300,6 +310,12 @@ public class MainGameState extends BasicTWLGameState{
 			if(grabbedTileId != 99 && !player.getSpace().intersects(new Rectangle(x + camera.getX() - (TILE_SIZE / 2), y + camera.getY() - (TILE_SIZE / 2), TILE_SIZE, TILE_SIZE))) {
 				Area.getAreaControl().getMap(0).setTileId((int)((x + camera.getX()) / TILE_SIZE), (int)((y + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 				Area.getAreaControl().updateBlocked(0);
+				
+				int[] temp = new int[2];
+				temp[0] = (int)((x + camera.getX()) / TILE_SIZE);
+				temp[1] = (int)((y + camera.getY()) / TILE_SIZE);
+				
+				changedTileList.put(temp, (Integer)grabbedTileId);
 			}
 			System.out.println("X:" + x + "Y:" + y + "width:" + TILE_SIZE);
 		}
@@ -336,6 +352,10 @@ public class MainGameState extends BasicTWLGameState{
 	
 	public Camera getCamera() {
 		return camera;
+	}
+
+	public static void setChangedTileList(HashMap<int[],Integer> restoreMap) {
+		changedTileList = restoreMap;
 	}
 	
 	
