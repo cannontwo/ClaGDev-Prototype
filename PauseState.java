@@ -17,9 +17,9 @@ public class PauseState extends BasicTWLGameState{
 
 	PausePanel pausePanel;
 	private boolean paused = true;
-	
+	private boolean exitFlag = false;
 	public PauseState() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	protected RootPane createRootPane(){
@@ -31,8 +31,9 @@ public class PauseState extends BasicTWLGameState{
 	}
 	
 	protected void layoutRootPane(){
-		pausePanel.setPosition(SlimeGame.WIDTH - SlimeGame.WIDTH / 2 - pausePanel.getWidth() / 2, pausePanel.getHeight() / 2);
 		pausePanel.adjustSize();
+		pausePanel.setPosition(SlimeGame.WIDTH - SlimeGame.WIDTH / 2 - pausePanel.getWidth() / 2,
+				SlimeGame.HEIGHT / 2 - pausePanel.getHeight() / 2);
 	}
 
 	@Override
@@ -55,6 +56,9 @@ public class PauseState extends BasicTWLGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
+		if(exitFlag){
+			container.exit();
+		}
 		if(!paused){
 			game.enterState(SlimeGame.MAINGAMESTATE);
 			paused = true;
@@ -73,8 +77,17 @@ public class PauseState extends BasicTWLGameState{
 		case Input.KEY_P:
 			paused = false;
 			break;
-			
+		case Input.KEY_ESCAPE:
+			exitFlag = true;
+			break;
 		}
+	}
+	
+	public void unpause(){
+		paused = false;
+	}
+	public void exit(){
+		exitFlag = true;
 	}
 
 }
