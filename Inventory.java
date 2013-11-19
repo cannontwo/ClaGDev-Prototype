@@ -8,6 +8,16 @@ public class Inventory {
 		items = new Item[16];
 	}
 	
+	public Inventory(int[] idArray) {
+		items = new Item[16];
+		
+		for(int i = 0; i < 16; i++) {
+			if(idArray[i] != -1) {
+				items[i] = new Item(idArray[i]);
+			}
+		}
+	}
+	
 	public boolean add(Item item) {
 		for(int i = 0; i < items.length; i++) {
 			if(items[i] == null) {
@@ -55,5 +65,16 @@ public class Inventory {
 		}
 		return -1;
 		
+	}
+
+	public int[] getIdArray() {
+		int[] idArray = new int[items.length];
+		for(int i = 0; i < items.length; i++) {
+			idArray[i] = -1;
+			if(items[i] != null) {
+				idArray[i] = items[i].getId();
+			}
+		}
+		return idArray;
 	}
 }

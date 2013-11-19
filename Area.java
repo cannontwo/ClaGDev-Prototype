@@ -8,7 +8,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import org.newdawn.slick.SlickException;
@@ -30,11 +32,20 @@ public class Area {
 			map = new TiledMap(levelFile);
 			File saveFile = new File(SlimeGame.basePath + "res//savefile.json");
 			if(saveFile.exists()) {
-				HashMap<int[],Integer> restoredArray = restoreMap(saveFile);
+				HashMap<List<Integer>,Integer> restoredArray = restoreMap(saveFile);
 				MainGameState.setChangedTileList(restoredArray);
+				ArrayList<List<Integer>> removeLaterList = new ArrayList<List<Integer>>();
 				
-				for(int[] intArray : restoredArray.keySet()) {
-					map.setTileId(intArray[0], intArray[1], 0, restoredArray.get(intArray));
+				for(List<Integer> intArray : restoredArray.keySet()) {
+					if(map.getTileId(intArray.get(0), intArray.get(1), 0) == restoredArray.get(intArray)) {
+						removeLaterList.add(intArray);
+					} else {
+						map.setTileId(intArray.get(0), intArray.get(1), 0, restoredArray.get(intArray));
+					}
+				}
+				
+				for(List<Integer> toRemove : removeLaterList) {
+					restoredArray.remove(toRemove);
 				}
 			}
 			
@@ -64,9 +75,9 @@ public class Area {
 		}
 	}
 	
-	public void saveMap(HashMap<int[],Integer> changedTileList) {
+	public void saveMap(HashMap<List<Integer>,Integer> changedTileList) {
 		try {
-			Type hashType = new TypeToken<HashMap<int[],Integer>>(){}.getType();
+			Type hashType = new TypeToken<HashMap<List<Integer>,Integer>>(){}.getType();
 			
 			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//savefile.json"));
 			GsonBuilder builder = new GsonBuilder();
@@ -81,11 +92,11 @@ public class Area {
 	}
 	
 	
-	private HashMap<int[], Integer> restoreMap(File saveFile) {
-		Type hashType = new TypeToken<HashMap<int[],Integer>>() {}.getType();
+	private HashMap<List<Integer>, Integer> restoreMap(File saveFile) {
+		Type hashType = new TypeToken<HashMap<List<Integer>,Integer>>() {}.getType();
 		Gson myGson = new Gson();
 		
-		HashMap<int[],Integer> tempHash = new HashMap<int[],Integer>();
+		HashMap<List<Integer>,Integer> tempHash = new HashMap<List<Integer>,Integer>();
 		
 		try {
 			Scanner reader = new Scanner(new BufferedReader(new FileReader(saveFile)));

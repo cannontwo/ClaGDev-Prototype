@@ -56,10 +56,10 @@ public abstract class Entity {
 	
 	//Static list of all entities
 	public static ArrayList<Entity> entityList = new ArrayList<Entity>();
-	public static Entity getPlayer(){
+	public static Player getPlayer(){
 		for(Entity entity: entityList){
 			if(entity instanceof Player)
-				return entity;
+				return (Player)entity;
 		}
 		return null;
 	}
@@ -327,11 +327,11 @@ public abstract class Entity {
 	public void stopJump() {
 		jumpTime = 0;
 	}
-	public double getX() {
+	public float getX() {
 		return x;
 	}
 	
-	public double getY() {
+	public float getY() {
 		return y;
 	}
 	

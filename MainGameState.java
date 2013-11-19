@@ -1,8 +1,12 @@
 package com.cannon.basegame;
 
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -40,7 +44,7 @@ public class MainGameState extends BasicTWLGameState{
 	//Controls quitting game
 	private boolean exitFlag = false;
 	//Used to save map changes
-	private static HashMap<int[],Integer> changedTileList;
+	private static HashMap<List<Integer>,Integer> changedTileList;
 	
 	public static RecipeBook recipeBook;
 	
@@ -100,7 +104,8 @@ public class MainGameState extends BasicTWLGameState{
 
 	@Override 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		changedTileList = new HashMap<int[],Integer>();
+		changedTileList = new HashMap<List<Integer>,Integer>();
+	
 		
 		container.getGraphics().setBackground(new Color(0,100,255));
 		Area.init();
@@ -110,12 +115,24 @@ public class MainGameState extends BasicTWLGameState{
 		
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
 		
-		player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
+		
+		File playerSaveFile = new File(SlimeGame.basePath + "res//playersave.json");
+		if(playerSaveFile.exists()) {
+			player = Player.restorePlayer(playerSaveFile);
+		}else {
+			player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
+			for(Entity entity : levelData.getEntities()){
+				Entity.entityList.add(entity);
+			}
+		}
+		
+		if(player == null) {
+			player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
+		}
+		
 		Entity.entityList.add(player);
 		
-		for(Entity entity : levelData.getEntities()){
-			Entity.entityList.add(entity);
-		}
+		
 		
 		mapWidth = map.getWidth() * map.getTileWidth();
 		mapHeight = map.getHeight() * map.getTileHeight();
@@ -152,6 +169,11 @@ public class MainGameState extends BasicTWLGameState{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		if(exitFlag) {
+			Area.getAreaControl().saveMap(changedTileList);
+			player.savePlayer();
+			for(List<Integer> location : changedTileList.keySet()) {
+				System.out.println(location.get(0) + ", " + location.get(1) + ": " + changedTileList.get(location));
+			}
 			container.exit();
 		}
 		
@@ -235,7 +257,6 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_ESCAPE:
 			exitFlag = true;
-			Area.getAreaControl().saveMap(changedTileList);
 			break;
 		}
 	}
@@ -276,9 +297,7 @@ public class MainGameState extends BasicTWLGameState{
 			Area.getAreaControl().getMap(0).setTileId((int)((newx + camera.getX()) / TILE_SIZE), (int)((newy + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 			Area.getAreaControl().updateBlocked(0);
 			
-			int[] temp = new int[2];
-			temp[0] = (int)((newx + camera.getX()) / TILE_SIZE);
-			temp[1] = (int)((newy + camera.getY()) / TILE_SIZE);
+			List<Integer> temp = Collections.unmodifiableList(Arrays.asList((int)((newx + camera.getX()) / TILE_SIZE),(int)((newy + camera.getY()) / TILE_SIZE) ));
 			
 			changedTileList.put(temp, (Integer)grabbedTileId);
 			
@@ -311,9 +330,7 @@ public class MainGameState extends BasicTWLGameState{
 				Area.getAreaControl().getMap(0).setTileId((int)((x + camera.getX()) / TILE_SIZE), (int)((y + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 				Area.getAreaControl().updateBlocked(0);
 				
-				int[] temp = new int[2];
-				temp[0] = (int)((x + camera.getX()) / TILE_SIZE);
-				temp[1] = (int)((y + camera.getY()) / TILE_SIZE);
+				List<Integer> temp = Collections.unmodifiableList(Arrays.asList((int)((x + camera.getX()) / TILE_SIZE),(int)((y + camera.getY()) / TILE_SIZE) ));
 				
 				changedTileList.put(temp, (Integer)grabbedTileId);
 			}
@@ -354,8 +371,8 @@ public class MainGameState extends BasicTWLGameState{
 		return camera;
 	}
 
-	public static void setChangedTileList(HashMap<int[],Integer> restoreMap) {
-		changedTileList = restoreMap;
+	public static void setChangedTileList(HashMap<List<Integer>,Integer> restoredArray) {
+		changedTileList = restoredArray;
 	}
 	
 	
