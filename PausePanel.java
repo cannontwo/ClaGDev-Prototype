@@ -46,7 +46,7 @@ public class PausePanel extends Widget {
 		});
 		add(optionsButton);
 		quitButton = new Button();
-		quitButton.setText(addSpaces("Quit"));
+		quitButton.setText(addSpaces("Save and Quit"));
 		quitButton.addCallback(new Runnable(){
 
 			@Override

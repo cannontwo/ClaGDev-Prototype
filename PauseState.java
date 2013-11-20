@@ -57,8 +57,8 @@ public class PauseState extends BasicTWLGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if(exitFlag){
-			container.exit();
 			((MainGameState)(game.getState(SlimeGame.MAINGAMESTATE))).exit();
+			game.enterState(SlimeGame.MAINGAMESTATE);
 		}
 		if(!paused){
 			game.enterState(SlimeGame.MAINGAMESTATE);
