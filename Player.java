@@ -106,42 +106,42 @@ public class Player extends Entity{
 		return new Rectangle(x - MainGameState.TILE_SIZE, y - MainGameState.TILE_SIZE, width + MainGameState.TILE_SIZE, height + MainGameState.TILE_SIZE);
 	}
 
-	public static Player restorePlayer(File playerSaveFile) {
-		Player tempPlayer = new Player();
-		PlayerData tempPlayerData = null;
-		
-		Gson gson = new Gson();
-		
-		try {
-			Scanner reader = new Scanner(new BufferedReader(new FileReader(playerSaveFile)));
-			if(reader.hasNext()) {
-				tempPlayerData = gson.fromJson(reader.next(),PlayerData.class);
-				tempPlayer.x = tempPlayerData.getX();
-				tempPlayer.y = tempPlayerData.getY();
-				tempPlayer.inventory = new Inventory(tempPlayerData.getInventoryIdArray());
-				tempPlayer.health = tempPlayerData.getHealth();
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		return tempPlayer;
-	}
+//	public static Player restorePlayer(File playerSaveFile) {
+//		Player tempPlayer = new Player();
+//		EntityData tempPlayerData = null;
+//		
+//		Gson gson = new Gson();
+//		
+//		try {
+//			Scanner reader = new Scanner(new BufferedReader(new FileReader(playerSaveFile)));
+//			if(reader.hasNext()) {
+//				tempPlayerData = gson.fromJson(reader.next(),EntityData.class);
+//				tempPlayer.x = tempPlayerData.getX();
+//				tempPlayer.y = tempPlayerData.getY();
+//				tempPlayer.inventory = new Inventory(tempPlayerData.getInventoryIdArray());
+//				tempPlayer.health = tempPlayerData.getHealth();
+//			}
+//			reader.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return tempPlayer;
+//	}
 	
-	public void savePlayer() {
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//playersave.json"));
-			Gson gson = new Gson();
-			
-			PlayerData playerData = new PlayerData(this);
-			
-			writer.write(gson.toJson(playerData));
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void savePlayer() {
+//		try {
+//			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//playersave.json"));
+//			Gson gson = new Gson();
+//			
+//			EntityData playerData = new EntityData(this);
+//			
+//			writer.write(gson.toJson(playerData));
+//			writer.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public int[] getInventoryIdArray() {
 		return inventory.getIdArray();

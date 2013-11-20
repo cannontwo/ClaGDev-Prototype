@@ -116,11 +116,13 @@ public class MainGameState extends BasicTWLGameState{
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
 		
 		
-		File playerSaveFile = new File(SlimeGame.basePath + "res//playersave.json");
-		if(playerSaveFile.exists()) {
-			player = Player.restorePlayer(playerSaveFile);
-		}else {
+		File entitySaveFile = new File(SlimeGame.basePath + "res//entitysave.json");
+		if(entitySaveFile.exists()) {
+			Entity.entityList = Entity.restoreEntities(entitySaveFile);
+			player = Entity.getPlayer();
+		} else {
 			player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
+			Entity.entityList.add(player);
 			for(Entity entity : levelData.getEntities()){
 				Entity.entityList.add(entity);
 			}
@@ -128,11 +130,8 @@ public class MainGameState extends BasicTWLGameState{
 		
 		if(player == null) {
 			player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
+			Entity.entityList.add(player);
 		}
-		
-		Entity.entityList.add(player);
-		
-		
 		
 		mapWidth = map.getWidth() * map.getTileWidth();
 		mapHeight = map.getHeight() * map.getTileHeight();
@@ -170,7 +169,7 @@ public class MainGameState extends BasicTWLGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		if(exitFlag) {
 			Area.getAreaControl().saveMap(changedTileList);
-			player.savePlayer();
+			Entity.saveEntities();
 			for(List<Integer> location : changedTileList.keySet()) {
 				System.out.println(location.get(0) + ", " + location.get(1) + ": " + changedTileList.get(location));
 			}

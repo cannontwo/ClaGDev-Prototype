@@ -1,11 +1,21 @@
 package com.cannon.basegame;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+
+import com.google.gson.Gson;
 
 
 public abstract class Entity {
@@ -417,4 +427,64 @@ public abstract class Entity {
 		return height;
 	}
 	
+	public static void saveEntities() {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//entitysave.json"));
+			Gson gson = new Gson();
+			
+			writer.write("");
+			
+			for(Entity entity : entityList) {
+				EntityData entityData = new EntityData(entity);		
+				writer.append(gson.toJson(entityData) + "\n");
+			}
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	public static ArrayList<Entity> restoreEntities(File entitySaveFile) {
+		ArrayList<Entity> returnEntities = new ArrayList<Entity>();
+		EntityData tempEntityData = null;
+		
+		Gson gson = new Gson();
+		
+		try{
+			Scanner reader = new Scanner(new BufferedReader(new FileReader(entitySaveFile)));
+			while(reader.hasNext()) {
+				tempEntityData = gson.fromJson(reader.next(), EntityData.class);
+				Entity addingEntity;
+				switch(tempEntityData.getEntityType()) {
+				case EntityData.PLAYER:
+					Player tempPlayer = new Player();
+					tempPlayer.setInventory(new Inventory(tempEntityData.getInventoryIdArray()));
+					addingEntity = tempPlayer;
+					break;
+				case EntityData.ITEM:
+					Item tempItem = new Item();
+					tempItem.setId(tempEntityData.getItemId());
+					addingEntity = tempItem;
+					break;
+				default:
+					addingEntity = new Item();
+					break;
+				}
+				
+				addingEntity.x = tempEntityData.getX();
+				addingEntity.y = tempEntityData.getY();
+				addingEntity.health = tempEntityData.getHealth();
+				
+				returnEntities.add(addingEntity);
+			}
+			
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return returnEntities;
+	}
+
+}
