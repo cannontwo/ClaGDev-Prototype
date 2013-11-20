@@ -104,7 +104,7 @@
                 <param name="maxHeight"><int>55</int></param>
             </theme>
             <theme name="button" ref="-defaults">
-                <param name="background"><image>panel-blue</image></param>
+                <param name="background"><image>button.background</image></param>
                 <param name="border"><border>10,0</border></param>
                 <param name="font"><font>button.font</font></param>
             </theme>
