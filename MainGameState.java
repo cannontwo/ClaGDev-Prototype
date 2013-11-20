@@ -236,7 +236,10 @@ public class MainGameState extends BasicTWLGameState{
 			Entity.entityList.add(newItem);
 			break;
 		case Input.KEY_ESCAPE:
-			exitFlag  = true;
+			paused = true;
+			break;
+		case Input.KEY_Q:
+			exitFlag = true;
 			break;
 		}
 	}
@@ -267,9 +270,6 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_SPACE:
 			player.stopJump();
-			break;
-		case Input.KEY_P:
-			paused = true;
 			break;
 		}
 	}
@@ -344,9 +344,9 @@ public class MainGameState extends BasicTWLGameState{
 	public Camera getCamera() {
 		return camera;
 	}
-	
-	
-	
-	
 
+	public void exit() {
+		exitFlag = true;
+	}
+	
 }

@@ -32,7 +32,6 @@ public class SlimeGame extends TWLStateBasedGame{
 		app.setDisplayMode(WIDTH, HEIGHT, false);
 		app.setShowFPS(false);
 		app.start();    
-
 	}
 
 	@Override

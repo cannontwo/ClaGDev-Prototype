@@ -58,6 +58,7 @@ public class PauseState extends BasicTWLGameState{
 			throws SlickException {
 		if(exitFlag){
 			container.exit();
+			((MainGameState)(game.getState(SlimeGame.MAINGAMESTATE))).exit();
 		}
 		if(!paused){
 			game.enterState(SlimeGame.MAINGAMESTATE);
@@ -71,14 +72,11 @@ public class PauseState extends BasicTWLGameState{
 		return SlimeGame.PAUSESTATE;
 	}
 	
-	public void keyReleased(int key, char c){
-		super.keyReleased(key, c);
+	public void keyPressed(int key, char c){
+		super.keyPressed(key, c);
 		switch(key){
-		case Input.KEY_P:
-			paused = false;
-			break;
 		case Input.KEY_ESCAPE:
-			exitFlag = true;
+			paused = false;
 			break;
 		}
 	}

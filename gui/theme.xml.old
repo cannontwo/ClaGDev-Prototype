@@ -91,7 +91,6 @@
     </theme>
     <theme name="state1" ref="-defaults">
         <theme name="inventorypanel" ref="-defaults">
-            <param name="slotSpacing"><int>20</int></param>
             <theme name="itemslot" ref="-defaults">
                 <param name="icons">
                     <map>
@@ -104,18 +103,35 @@
                 <param name="minHeight"><int>55</int></param>
                 <param name="maxHeight"><int>55</int></param>
             </theme>
+            <theme name="button" ref="-defaults">
+                <param name="background"><image>panel-blue</image></param>
+                <param name="border"><border>10,0</border></param>
+                <param name="font"><font>button.font</font></param>
+            </theme>
+            <param name="slotSpacing"><int>20</int></param>
             <param name="minWidth"><int>400</int></param>
             <param name="maxWidth"><int>400</int></param>
             <param name="minHeight"><int>601</int></param>
             <param name="maxHeight"><int>600</int></param>
             <param name="background"><image>inventory</image></param>
+        </theme>
+        
+    
+    </theme>
+     <theme name="state2" ref="-defaults">
+        <theme name="pausepanel" ref="-defaults">
             <theme name="button" ref="-defaults">
-                <param name="background"><image>panel-black</image></param>
+                <param name="background"><image>panel-blue</image></param>
                 <param name="border"><border>10,0</border></param>
                 <param name="font"><font>button.font</font></param>
             </theme>
+            <param name="minWidth"><int>400</int></param>
+            <param name="maxWidth"><int>400</int></param>
+            <param name="minHeight"><int>300</int></param>
+            <param name="maxHeight"><int>300</int></param>
+            <param name="background"><image>panel-black</image></param>
+            <param name="border"><border>10,0</border></param>
         </theme>
-    
     </theme>
 
 </themes>
