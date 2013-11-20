@@ -41,6 +41,8 @@ public class MainGameState extends BasicTWLGameState{
 	private Image selectionImage;
 	private boolean changeState = false;
 	private boolean firstTime = true;
+	private boolean paused = false;
+
 	//Controls quitting game
 	private boolean exitFlag = false;
 	//Used to save map changes
@@ -198,6 +200,9 @@ public class MainGameState extends BasicTWLGameState{
 		if(changeState) {
 			game.enterState(SlimeGame.INVENTORYSTATE);
 			changeState = false;
+		} else if(paused){
+			paused = false;
+			game.enterState(SlimeGame.PAUSESTATE);
 		}
 		
 
@@ -255,6 +260,9 @@ public class MainGameState extends BasicTWLGameState{
 			Entity.entityList.add(newItem);
 			break;
 		case Input.KEY_ESCAPE:
+			paused = true;
+			break;
+		case Input.KEY_Q:
 			exitFlag = true;
 			break;
 		}
@@ -374,8 +382,9 @@ public class MainGameState extends BasicTWLGameState{
 		changedTileList = restoredArray;
 	}
 	
-	
-	
-	
 
+	public void exit() {
+		exitFlag = true;
+	}
+	
 }
