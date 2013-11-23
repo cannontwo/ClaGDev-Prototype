@@ -203,8 +203,10 @@ public class MainGameState extends BasicTWLGameState{
 			
 			if(entityA.onCollision(entityB)) {
 				entityB.onCollision(entityA);
-			}
+			}	
 		}
+		EntityCollision.entityCollisionList.clear();
+		
 		if(changeState) {
 			game.enterState(SlimeGame.INVENTORYSTATE);
 			changeState = false;
@@ -263,12 +265,14 @@ public class MainGameState extends BasicTWLGameState{
 		case Input.KEY_F:
 			Random rand = new Random();
 			Item newItem = new Item(rand.nextInt(4));
-			newItem.setX(rand.nextInt(Area.getAreaControl().getMap(0).getWidth() * MainGameState.TILE_SIZE));
+			newItem.setX(rand.nextInt((Area.getAreaControl().getMap(0).getWidth() - 1) * MainGameState.TILE_SIZE));
 			newItem.setY(10);
 			Entity.entityList.add(newItem);
 			break;
 		case Input.KEY_ESCAPE:
 			paused = true;
+			System.out.println("Number of Entities: " + Entity.entityList.size());
+			System.out.println("Unresolved Collisions: " + EntityCollision.entityCollisionList.size());
 			break;
 		case Input.KEY_Q:
 			exitFlag = true;

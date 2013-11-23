@@ -90,7 +90,7 @@ public class Item extends Entity{
 	@Override
 	protected boolean PosValidEntity(Entity entity, int newX, int newY) {
 		
-		if(this != entity && entity != null && !entity.isDead() && entity.canCollide && entity.collides(newX, newY, width, height)) {
+		if(this != entity && entity != null && !entity.isDead() && entity.canCollide && entity.collides(newX, newY, width, height) && !(entity instanceof Item)) {
 			
 			EntityCollision entityCol = new EntityCollision(this, entity);
 			EntityCollision.entityCollisionList.push(entityCol);

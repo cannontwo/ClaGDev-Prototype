@@ -201,7 +201,7 @@ public class InventoryPanel extends Widget {
 			Widget w = getWidgetAt(evt.getMouseX(),evt.getMouseY());
 			if(w instanceof ItemSlot) {
 				setDropSlot((ItemSlot) w);
-				System.out.println("Drop Slot: " + dropSlot.getItem());
+				//System.out.println("Drop Slot: " + dropSlot.getItem());
 			} else {
 				setDropSlot(null);
 			}
@@ -219,7 +219,7 @@ public class InventoryPanel extends Widget {
 				dragSlot.setItem(null);
 				dropSlot.findIcon();
 				dragSlot.findIcon();
-				System.out.println("Dropping");
+				//System.out.println("Dropping");
 			} 
 			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && dropSlot == null){
 				inventory.remove(dragSlot.getItem());
