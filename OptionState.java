@@ -1,5 +1,7 @@
 package com.cannon.basegame;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -12,34 +14,35 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.cannon.basegame.not_mine.BasicTWLGameState;
 import com.cannon.basegame.not_mine.RootPane;
 
+public class OptionState extends BasicTWLGameState{
 
-public class PauseState extends BasicTWLGameState{
-
-	PausePanel pausePanel;
-	private boolean paused = true;
-	private boolean exitFlag = false;
-	private boolean optionFlag = false;
+	private OptionPanel optionPanel;
+	public HashMap<String, Boolean> options;
 	
-	public PauseState() {
-		
+	public OptionState() {
+		options = new HashMap<String, Boolean>();
+		options.put("Back", false);
+		options.put("FullScreen", false);
+		options.put("ShowFPS", false);
 	}
 	
 	protected RootPane createRootPane(){
 		RootPane rp = super.createRootPane();
-		pausePanel = new PausePanel(this);
-		rp.add(pausePanel);
+		optionPanel = new OptionPanel(this);
+		rp.add(optionPanel);
 		
 		return rp;
 	}
 	
 	protected void layoutRootPane(){
-		pausePanel.adjustSize();
-		pausePanel.setPosition(SlimeGame.WIDTH - SlimeGame.WIDTH / 2 - pausePanel.getWidth() / 2,
-				SlimeGame.HEIGHT / 2 - pausePanel.getHeight() / 2);
+		optionPanel.adjustSize();
+		optionPanel.setPosition(SlimeGame.WIDTH - SlimeGame.WIDTH / 2 - optionPanel.getWidth() / 2,
+				SlimeGame.HEIGHT / 2 - optionPanel.getHeight() / 2);
+
 	}
 
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		// TODO Auto-generated method stub
 		
@@ -52,49 +55,35 @@ public class PauseState extends BasicTWLGameState{
 		mainGameState.render(container, game, g);
 		Rectangle rect = new Rectangle(((MainGameState)mainGameState).getCamera().getX(),((MainGameState)mainGameState).getCamera().getY(),SlimeGame.WIDTH,SlimeGame.HEIGHT);
 		g.setColor(new Color(0.2f,0.2f,0.2f,0.6f));
-		g.fill(rect);		
+		g.fill(rect);	
+		
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		if(exitFlag){
-			((MainGameState)(game.getState(SlimeGame.MAINGAMESTATE))).exit();
-			game.enterState(SlimeGame.MAINGAMESTATE);
+		if(options.get("Back")){
+			game.enterState(SlimeGame.PAUSESTATE);
+			options.put("Back", false);
+			return;
 		}
-		if(!paused){
-			game.enterState(SlimeGame.MAINGAMESTATE);
-			paused = true;
-		}
-		if(optionFlag){
-			optionFlag = false;
-			game.enterState(SlimeGame.OPTIONSTATE);
-		}
+		container.setFullscreen(options.get("FullScreen"));
+		container.setShowFPS(options.get("ShowFPS"));
 		
 	}
 
 	@Override
 	public int getID() {
-		return SlimeGame.PAUSESTATE;
+		// TODO Auto-generated method stub
+		return 3;
 	}
-	
+
 	public void keyPressed(int key, char c){
 		super.keyPressed(key, c);
 		switch(key){
 		case Input.KEY_ESCAPE:
-			paused = false;
+			options.put("Back", true);
 			break;
 		}
 	}
-	
-	public void unpause(){
-		paused = false;
-	}
-	public void exit(){
-		exitFlag = true;
-	}
-	public void options(){
-		optionFlag = true;
-	}
-
 }

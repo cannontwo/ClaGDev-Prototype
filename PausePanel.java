@@ -9,7 +9,7 @@ public class PausePanel extends Widget {
 	private Button resumeButton;
 	private Button optionsButton;
 	private Button quitButton;
-	private final short SPACES = 15;
+	private final short SPACES = 20;
 	
 	private String addSpaces(String string){ //makes all text roughly the same length, is there a better way to do this?
 			if(string.length() < SPACES){
@@ -40,7 +40,7 @@ public class PausePanel extends Widget {
 
 			@Override
 			public void run() {
-				//we need options
+				getPauseState().options();
 			}
 			
 		});
