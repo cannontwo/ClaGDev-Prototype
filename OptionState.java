@@ -1,6 +1,15 @@
 package com.cannon.basegame;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -13,11 +22,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.cannon.basegame.not_mine.BasicTWLGameState;
 import com.cannon.basegame.not_mine.RootPane;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class OptionState extends BasicTWLGameState{
 
 	private OptionPanel optionPanel;
-	public HashMap<String, Boolean> options;
+	public static HashMap<String, Boolean> options;
 	
 	public OptionState() {
 		options = new HashMap<String, Boolean>();
@@ -28,7 +40,7 @@ public class OptionState extends BasicTWLGameState{
 	
 	protected RootPane createRootPane(){
 		RootPane rp = super.createRootPane();
-		optionPanel = new OptionPanel(this);
+		optionPanel = new OptionPanel();
 		rp.add(optionPanel);
 		
 		return rp;
@@ -63,11 +75,13 @@ public class OptionState extends BasicTWLGameState{
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if(options.get("Back")){
-			game.enterState(SlimeGame.PAUSESTATE);
 			options.put("Back", false);
+			saveOptions();
+			game.enterState(SlimeGame.PAUSESTATE);
 			return;
 		}
 		container.setFullscreen(options.get("FullScreen"));
+		container.getGraphics().setBackground(new Color(0, 100, 255));
 		container.setShowFPS(options.get("ShowFPS"));
 		
 	}
@@ -85,5 +99,39 @@ public class OptionState extends BasicTWLGameState{
 			options.put("Back", true);
 			break;
 		}
+	}
+	
+	public void saveOptions(){
+		try {
+			Type hashType = new TypeToken<HashMap<String, Boolean>>(){}.getType();
+			
+			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//saveoptions.json"));
+			GsonBuilder builder = new GsonBuilder();
+
+	        Gson gson = builder.enableComplexMapKeySerialization().create();
+			
+			writer.write(gson.toJson(options, hashType));
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static HashMap<String, Boolean> restoreOptions(File optionSaveFile){
+		Type hashType = new TypeToken<HashMap<String, Boolean>>() {}.getType();
+		Gson myGson = new Gson();
+		
+		HashMap<String, Boolean> tempHash = new HashMap<String, Boolean>();
+		
+		try {
+			Scanner reader = new Scanner(new BufferedReader(new FileReader(optionSaveFile)));
+			if(reader.hasNext()) {
+				tempHash = myGson.fromJson(reader.next(),hashType);
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return tempHash;
 	}
 }

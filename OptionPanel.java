@@ -5,23 +5,21 @@ import de.matthiasmann.twl.Widget;
 
 public class OptionPanel extends Widget{
 
-	private OptionState optionState;
 	private Button fullScreenButton;
 	private Button backButton;
 	private Button fpsButton;
 	
-	public OptionPanel(OptionState optionState) {
-		this.optionState = optionState;
+	public OptionPanel() {
 		
 		fullScreenButton = new Button();
-		String temp = optionState.options.get("FullScreen") ? "On":"Off";
+		String temp = OptionState.options.get("FullScreen") ? "On":"Off";
 		fullScreenButton.setText("Full Screen Mode: " + temp);
 		fullScreenButton.addCallback(new Runnable() {
 
 			@Override
 			public void run() {
-				getOptionState().options.put("FullScreen", !getOptionState().options.get("FullScreen"));
-				String temp = getOptionState().options.get("FullScreen") ? "On":"Off";
+				OptionState.options.put("FullScreen", !OptionState.options.get("FullScreen"));
+				String temp = OptionState.options.get("FullScreen") ? "On":"Off";
 				fullScreenButton.setText("Full Screen Mode: " + temp);
 			}
 			
@@ -33,21 +31,21 @@ public class OptionPanel extends Widget{
 
 			@Override
 			public void run() {
-				getOptionState().options.put("Back", true);
+				OptionState.options.put("Back", true);
 				
 			}
 			
 		});
 		
 		fpsButton = new Button();
-		temp = getOptionState().options.get("ShowFPS") ? "On":"Off";
+		temp = OptionState.options.get("ShowFPS") ? "On":"Off";
 		fpsButton.setText("Show FPS: " + temp);
 		fpsButton.addCallback(new Runnable() {
 
 			@Override
 			public void run() {
-				getOptionState().options.put("ShowFPS", !getOptionState().options.get("ShowFPS"));
-				String temp = getOptionState().options.get("ShowFPS") ? "On":"Off";
+				OptionState.options.put("ShowFPS", !OptionState.options.get("ShowFPS"));
+				String temp = OptionState.options.get("ShowFPS") ? "On":"Off";
 				fpsButton.setText("Show FPS: " + temp);
 				
 			}
@@ -69,9 +67,6 @@ public class OptionPanel extends Widget{
 		fpsButton.setPosition(getX() + getWidth() / 4 - fpsButton.getWidth() / 2,
 				getY() + getHeight() * 4/10 - fpsButton.getHeight() / 2);
 	}
-	
-	public OptionState getOptionState(){
-		return optionState;
-	}
+
 
 }

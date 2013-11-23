@@ -109,7 +109,7 @@ public class MainGameState extends BasicTWLGameState{
 		changedTileList = new HashMap<List<Integer>,Integer>();
 	
 		
-		container.getGraphics().setBackground(new Color(0,100,255));
+		
 		Area.init();
 		Item.initList();
 		
@@ -130,6 +130,13 @@ public class MainGameState extends BasicTWLGameState{
 			}
 		}
 		
+		File optionSaveFile = new File(SlimeGame.basePath + "res//saveoptions.json");
+		if(optionSaveFile.exists()){
+			OptionState.options = OptionState.restoreOptions(optionSaveFile);
+			container.setFullscreen(OptionState.options.get("FullScreen"));
+			container.setShowFPS(OptionState.options.get("ShowFPS"));
+		} 
+		
 		if(player == null) {
 			player = new Player((int) levelData.getPlayerX(), (int) levelData.getPlayerY());
 			Entity.entityList.add(player);
@@ -138,6 +145,7 @@ public class MainGameState extends BasicTWLGameState{
 		mapWidth = map.getWidth() * map.getTileWidth();
 		mapHeight = map.getHeight() * map.getTileHeight();
 		camera = new Camera(map, mapWidth, mapHeight);
+		container.getGraphics().setBackground(new Color(0,100,255));
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class Item extends Entity{
 	
 	private int id;
 	private boolean pickedUp = false;
-	private int autoRemoveTimer = -1;
+	public int autoRemoveTimer = -1;
 	public static HashMap<Integer,String> itemList;
 	
 	public Item() {

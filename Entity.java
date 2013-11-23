@@ -430,8 +430,10 @@ public abstract class Entity {
 			writer.write("");
 			
 			for(Entity entity : entityList) {
-				EntityData entityData = new EntityData(entity);		
-				writer.append(gson.toJson(entityData) + "\n");
+				if(!(entity instanceof Item) || ((Item)entity).autoRemoveTimer == -1){
+					EntityData entityData = new EntityData(entity);		
+					writer.append(gson.toJson(entityData) + "\n");
+				}
 			}
 			
 			writer.close();
