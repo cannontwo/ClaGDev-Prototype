@@ -48,6 +48,13 @@ public class Player extends Entity{
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
+		if(itemsPending.size() > 0 && itemThrowDelay++ % 5 == 0){
+			throwItem();
+			
+		}
+		if(itemThrowDelay > 100){
+			itemThrowDelay = 0;
+		}
 
 	}
 

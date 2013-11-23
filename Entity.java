@@ -62,7 +62,7 @@ public abstract class Entity {
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
 	
 	//Delay so all the items don't get thrown at once
-	private short itemThrowDelay = 0;
+	protected short itemThrowDelay = 0;
 	
 	//Static list of all entities
 	public static ArrayList<Entity> entityList = new ArrayList<Entity>();
@@ -136,13 +136,7 @@ public abstract class Entity {
 		
 		onMove(speedX, speedY, speedFactor);
 		
-		if(itemsPending.size() > 0 && itemThrowDelay++ % 5 == 0){
-			throwItem();
-			
-		}
-		if(itemThrowDelay > 100){
-			itemThrowDelay = 0;
-		}
+	
 	}
 	
 	protected void stopMove() {
@@ -241,7 +235,8 @@ public abstract class Entity {
 		}
 		item.setY((int) this.getY() - 5);
 		item.setSpeedY(-15);
-		if(item.canBeThrown()){ 
+		if(item.canBeThrown()){
+			item.setAutoRemoveTimer(1000);
 			Entity.entityList.add(item);
 			itemsPending.remove(0);
 		}

@@ -18,6 +18,7 @@ public class Item extends Entity{
 	
 	private int id;
 	private boolean pickedUp = false;
+	private int autoRemoveTimer = -1;
 	public static HashMap<Integer,String> itemList;
 	
 	public Item() {
@@ -44,7 +45,11 @@ public class Item extends Entity{
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		g.drawImage(image, x, y);
+		if(autoRemoveTimer == -1 || autoRemoveTimer > 250){
+			g.drawImage(image, x, y);
+		} else if(autoRemoveTimer % 10 != 0){
+			g.drawImage(image, x, y);
+		}
 	}
 	
 	
@@ -71,6 +76,15 @@ public class Item extends Entity{
 			System.out.print(itemList.get(i) + " ");
 		}
 		System.out.println();
+	}
+	
+	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		super.update(container, game, delta);
+		if(autoRemoveTimer != -1){
+			if(autoRemoveTimer-- == 0){
+				setDead(true);
+			}
+		}
 	}
 	
 	@Override
@@ -133,6 +147,10 @@ public class Item extends Entity{
 		
 		return true;
 		
+	}
+	
+	public void setAutoRemoveTimer(int time){
+		autoRemoveTimer = time;
 	}
 
 

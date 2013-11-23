@@ -76,7 +76,7 @@ public class InventoryState extends BasicTWLGameState{
 		
 		switch(key) {
 		case Input.KEY_ESCAPE:
-			exitFlag  = true;
+			changeState();
 			break;
 		}
 	};
