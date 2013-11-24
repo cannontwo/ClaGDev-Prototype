@@ -214,9 +214,10 @@ public class InventoryPanel extends Widget {
 	void dragStopped(ItemSlot slot, Event evt) {
 		if(dragSlot != null) {
 			dragging(slot, evt);
-			if(dropSlot != null && dropSlot.canDrop() && dropSlot != dragSlot) {
+			if(dropSlot != null && dropSlot != dragSlot) {
+				Item temp = dropSlot.getItem();
 				dropSlot.setItem(dragSlot.getItem());
-				dragSlot.setItem(null);
+				dragSlot.setItem(temp);
 				dropSlot.findIcon();
 				dragSlot.findIcon();
 				//System.out.println("Dropping");
