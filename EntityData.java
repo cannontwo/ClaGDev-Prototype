@@ -7,7 +7,7 @@ public class EntityData {
 	private int[] inventory;
 	private int health;
 	private int entityType;
-	private int itemId;
+	private int id;
 	
 
 	public EntityData(Entity entity) {
@@ -18,8 +18,11 @@ public class EntityData {
 			this.inventory = ((Player)(entity)).getInventoryIdArray();
 			this.entityType = EntityData.PLAYER;
 		} else if(entity instanceof Item) {
-			this.itemId = ((Item)(entity)).getId();
+			this.id = ((Item)(entity)).getId();
 			this.entityType = EntityData.ITEM;
+		} else if(entity instanceof MeleeEnemy){
+			this.id = ((MeleeEnemy)entity).getId();
+			this.entityType = EntityData.MELEE_ENEMY;
 		} else {
 			this.entityType = EntityData.OTHER;
 		}
@@ -61,13 +64,14 @@ public class EntityData {
 		return this.entityType;
 	}
 	
-	public int getItemId() {
-		return this.itemId;
+	public int getId() {
+		return this.id;
 	}
 	
 	
 	public static final int PLAYER = 0;
 	public static final int ITEM = 1;
+	public static final int MELEE_ENEMY = 2;
 	public static final int OTHER = 99;
 
 }

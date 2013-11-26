@@ -26,6 +26,7 @@ public class InventoryPanel extends Widget {
 	
 	private Button craftButton;
 	private Button closeButton;
+	private Button clearButton;
 	
 	private RecipeBook recipeBook;
 
@@ -126,6 +127,24 @@ public class InventoryPanel extends Widget {
 			
 		});
 		add(closeButton);
+		
+		clearButton = new Button();
+		clearButton.setText("Clear Items");
+		clearButton.addCallback(new Runnable() {
+			public void run() {
+				clearRecipeSlots();
+				for(ItemSlot slot: slots){
+					if(slot.getItem() != null){
+						Entity.getPlayer().itemsPending.add(slot.getItem());
+						slot.setItem(null);
+						leave();
+						slot.findIcon();
+					}
+				}
+				updateInventory();
+			}
+		});
+		add(clearButton);
 	}
 	
 	
@@ -176,7 +195,10 @@ public class InventoryPanel extends Widget {
 		craftButton.setPosition(getInnerX() + getWidth() / 2 - craftButton.getWidth() / 2, 215);
 		
 		closeButton.adjustSize();
-		closeButton.setPosition(getInnerX()+ getWidth() - craftButton.getWidth() -2*slotSpacing, 50);
+		closeButton.setPosition(getInnerX()+ getWidth() - craftButton.getWidth() - 50, 50);
+		
+		clearButton.adjustSize();
+		clearButton.setPosition(getInnerX() + clearButton.getWidth() / 2 , 100);
 	}
 
 

@@ -42,7 +42,7 @@ public class MainGameState extends BasicTWLGameState{
 	private boolean changeState = false;
 	private boolean firstTime = true;
 	private boolean paused = false;
-
+	private boolean developerMode = false;
 	//Controls quitting game
 	private boolean exitFlag = false;
 	//Used to save map changes
@@ -112,7 +112,8 @@ public class MainGameState extends BasicTWLGameState{
 		
 		Area.init();
 		Item.initList();
-		
+		MeleeEnemy.initList();
+		MeleeAction.initMeleeActions();
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
@@ -135,6 +136,7 @@ public class MainGameState extends BasicTWLGameState{
 			OptionState.options = OptionState.restoreOptions(optionSaveFile);
 			container.setFullscreen(OptionState.options.get("FullScreen"));
 			container.setShowFPS(OptionState.options.get("ShowFPS"));
+			setDeveloperMode(OptionState.options.get("DeveloperMode"));
 		} 
 		
 		if(player == null) {
@@ -190,7 +192,12 @@ public class MainGameState extends BasicTWLGameState{
 			Entity.entityList.get(num).update(container, game, delta);
 		}
 		
-		for(EntityCollision entityCollision : EntityCollision.entityCollisionList) {
+		if(developerMode){
+			Entity.getPlayer().setHealth(150);
+		}
+		//for(EntityCollision entityCollision : EntityCollision.entityCollisionList) {
+		while(EntityCollision.entityCollisionList.size() > 0){
+			EntityCollision entityCollision = EntityCollision.entityCollisionList.pop();
 			Entity entityA = entityCollision.a;
 			Entity entityB = entityCollision.b;
 			if(entityA == null || entityB == null) {
@@ -205,7 +212,7 @@ public class MainGameState extends BasicTWLGameState{
 				entityB.onCollision(entityA);
 			}	
 		}
-		EntityCollision.entityCollisionList.clear();
+		//EntityCollision.entityCollisionList.clear();
 		
 		if(changeState) {
 			game.enterState(SlimeGame.INVENTORYSTATE);
@@ -263,6 +270,9 @@ public class MainGameState extends BasicTWLGameState{
 			player.jump();
 			break;
 		case Input.KEY_F:
+			if(!developerMode){
+				break;
+			}
 			Random rand = new Random();
 			Item newItem = new Item(rand.nextInt(4));
 			newItem.setX(rand.nextInt((Area.getAreaControl().getMap(0).getWidth() - 1) * MainGameState.TILE_SIZE));
@@ -276,6 +286,16 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_Q:
 			exitFlag = true;
+			break;
+		case Input.KEY_P:
+			if(!developerMode){
+				break;
+			}
+			rand = new Random();
+			MeleeEnemy newEnemy = new MeleeEnemy(0);
+			newEnemy.setX(rand.nextInt((Area.getAreaControl().getMap(0).getWidth() - 1) * MainGameState.TILE_SIZE));
+			newEnemy.setY(10);
+			Entity.entityList.add(newEnemy);
 			break;
 		}
 	}
@@ -315,6 +335,9 @@ public class MainGameState extends BasicTWLGameState{
 
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		if(!developerMode){
+			return;
+		}
 		if(grabbedTileId != 99 && !player.getSpace().intersects(new Rectangle(newx + camera.getX() - (TILE_SIZE / 2), newy + camera.getY() - (TILE_SIZE / 2), TILE_SIZE, TILE_SIZE))) {
 			Area.getAreaControl().getMap(0).setTileId((int)((newx + camera.getX()) / TILE_SIZE), (int)((newy + camera.getY()) / TILE_SIZE), 0, grabbedTileId);
 			Area.getAreaControl().updateBlocked(0);
@@ -336,6 +359,9 @@ public class MainGameState extends BasicTWLGameState{
 	public void mousePressed(int button, int x, int y) {
 		// TODO Auto-generated method stub
 		super.mousePressed(button, x, y);
+		if(!developerMode){
+			return;
+		}
 		if(button == Input.MOUSE_RIGHT_BUTTON) {
 			grabbedTileId = Area.getAreaControl().getMap(0).getTileId((int)((x + camera.getX()) / TILE_SIZE), (int)((y + camera.getY()) / TILE_SIZE), 0);
 			try {
@@ -400,6 +426,10 @@ public class MainGameState extends BasicTWLGameState{
 
 	public void exit() {
 		exitFlag = true;
+	}
+	
+	public void setDeveloperMode(boolean devMode){
+		developerMode = devMode;
 	}
 	
 }

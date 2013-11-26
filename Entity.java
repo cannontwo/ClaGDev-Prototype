@@ -58,6 +58,8 @@ public abstract class Entity {
 	protected boolean turningLeft = false;
 	protected boolean turningRight = false;
 	
+	protected int timer = 0;
+	
 	//List of items to be thrown
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
 	
@@ -136,7 +138,9 @@ public abstract class Entity {
 		
 		onMove(speedX, speedY, speedFactor);
 		
-	
+		if(timer > 0){
+			timer--;
+		}
 	}
 	
 	protected void stopMove() {
@@ -461,8 +465,12 @@ public abstract class Entity {
 					break;
 				case EntityData.ITEM:
 					Item tempItem = new Item();
-					tempItem.setId(tempEntityData.getItemId());
+					tempItem.setId(tempEntityData.getId());
 					addingEntity = tempItem;
+					break;
+				case EntityData.MELEE_ENEMY:
+					MeleeEnemy meleeEnemy = new MeleeEnemy(tempEntityData.getId());
+					addingEntity = meleeEnemy;
 					break;
 				default:
 					addingEntity = new Item();
@@ -482,6 +490,28 @@ public abstract class Entity {
 		}
 		
 		return returnEntities;
+	}
+	
+	public boolean hit(Entity entity, int damage){
+		if(timer > 0 || entity.timer > 0){
+			return false;
+		}
+		timer = 50;
+		entity.timer = 50;
+		entity.health -= damage;
+		if(faceRight){
+			entity.speedX = entity.maxSpeedX;
+		}
+		else
+			entity.speedX = -maxSpeedX;
+		entity.speedY = -maxSpeedY;
+		return true;
+	}
+	
+	public double getDistance(float x, float y) {
+		float a = this.x + this.width / 2;
+		float b = this.y + this.height / 2;
+		return Math.sqrt(Math.pow(a - x, 2) + Math.pow(b - y, 2));
 	}
 
 }

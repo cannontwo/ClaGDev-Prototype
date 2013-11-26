@@ -36,6 +36,7 @@ public class OptionState extends BasicTWLGameState{
 		options.put("Back", false);
 		options.put("FullScreen", false);
 		options.put("ShowFPS", false);
+		options.put("DeveloperMode", false);
 	}
 	
 	protected RootPane createRootPane(){
@@ -83,6 +84,7 @@ public class OptionState extends BasicTWLGameState{
 		container.setFullscreen(options.get("FullScreen"));
 		container.getGraphics().setBackground(new Color(0, 100, 255));
 		container.setShowFPS(options.get("ShowFPS"));
+		((MainGameState) game.getState(SlimeGame.MAINGAMESTATE)).setDeveloperMode(options.get("DeveloperMode"));
 		
 	}
 

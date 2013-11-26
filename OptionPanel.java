@@ -8,6 +8,7 @@ public class OptionPanel extends Widget{
 	private Button fullScreenButton;
 	private Button backButton;
 	private Button fpsButton;
+	private Button devButton;
 	
 	public OptionPanel() {
 		
@@ -51,9 +52,21 @@ public class OptionPanel extends Widget{
 			}
 			
 		});
+		
+		devButton = new Button();
+		temp = OptionState.options.get("DeveloperMode") ? "On":"Off";
+		devButton.setText("Developer Mode: " + temp);
+		devButton.addCallback(new Runnable() {
+			public void run(){
+				OptionState.options.put("DeveloperMode", !OptionState.options.get("DeveloperMode"));
+				String temp = OptionState.options.get("DeveloperMode") ? "On":"Off";
+				devButton.setText("Developer Mode: " + temp);
+			}
+		});
 		add(fullScreenButton);
 		add(backButton);
 		add(fpsButton);
+		add(devButton);
 	}
 	
 	protected void layout(){
@@ -66,6 +79,9 @@ public class OptionPanel extends Widget{
 		fpsButton.adjustSize();
 		fpsButton.setPosition(getX() + getWidth() / 4 - fpsButton.getWidth() / 2,
 				getY() + getHeight() * 4/10 - fpsButton.getHeight() / 2);
+		devButton.adjustSize();
+		devButton.setPosition(getX() + getWidth() - devButton.getWidth() - 25,
+				getY() + getHeight() - devButton.getHeight());
 	}
 
 
