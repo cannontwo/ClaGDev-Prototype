@@ -296,6 +296,9 @@ public class MainGameState extends BasicTWLGameState{
 			newEnemy.setY(10);
 			Entity.entityList.add(newEnemy);
 			break;
+		case Input.KEY_R:
+			player.doAction();
+			break;
 		}
 	}
 

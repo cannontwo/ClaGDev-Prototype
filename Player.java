@@ -1,5 +1,12 @@
 package com.cannon.basegame;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Scanner;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -7,8 +14,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Player extends Entity{
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+public class Player extends Actor{
 	private Inventory inventory;
+	private MeleeAction actionType = new MeleeAction(this);
 	
 	public Player() {
 		health = 100;
@@ -55,6 +66,8 @@ public class Player extends Entity{
 		if(itemThrowDelay > 100){
 			itemThrowDelay = 0;
 		}
+		
+		actionType.act();		
 
 	}
 
@@ -72,6 +85,9 @@ public class Player extends Entity{
 
 	@Override
 	public boolean onCollision(Entity entity) {
+		if(actionFlag){
+			return actionType.onCollision(entity);
+		}
 		return true;
 	}
 	
@@ -141,6 +157,40 @@ public class Player extends Entity{
 
 	public int[] getInventoryIdArray() {
 		return inventory.getIdArray();
+	}
+
+	@Override
+	public HashMap<String, Integer> getStats() {
+		// TODO Auto-generated method stub
+		return stats;
+	}
+
+	@Override
+	public int getStat(String stat) {
+		return stats.get(stat);
+	}
+
+	@Override
+	public void initStats() {
+		HashMap<String, Integer> tempStats = new HashMap<String, Integer>();
+		Gson myGson = new Gson();
+		Type hashType = new TypeToken<HashMap<String, Integer>>() {}.getType();
+		try {
+			Scanner reader = new Scanner(new BufferedReader(new FileReader(SlimeGame.basePath + "data//playerStats.json")));
+			while(reader.hasNext()){
+				tempStats = myGson.fromJson(reader.next(), hashType);
+				actionType.toggleActions(tempStats.get("MeleeAction"));
+			}
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		stats = tempStats;
+		maxSpeedX = stats.get("MaxSpeedX");
+		maxSpeedY = stats.get("MaxSpeedY");
+}
+
+	public void doAction(){
+		actionFlag = true;
 	}
 	
 	

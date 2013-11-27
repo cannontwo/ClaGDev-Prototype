@@ -7,7 +7,10 @@ public class MeleeAction implements Action {
 	private Actor actor;
 	private Entity target = null;
 	private Calendar lastRegisteredTime = Calendar.getInstance();
+	
 	private int attackTimer = -1; //how long it takes to attack in seconds
+	public int cooldownTimer = -1; //time until next attack
+	
 	private boolean[] toggledActions;
 	public MeleeAction(Actor actor) {
 		this.actor = actor;
@@ -20,14 +23,35 @@ public class MeleeAction implements Action {
 	@Override
 	public void act() {
 		if(actor.attacking){
-			if(Calendar.getInstance().get(Calendar.SECOND) > lastRegisteredTime.get(Calendar.SECOND) ||
+			if(Calendar.getInstance().get(Calendar.MILLISECOND) > lastRegisteredTime.get(Calendar.MILLISECOND) &&
+					Calendar.getInstance().get(Calendar.SECOND) > lastRegisteredTime.get(Calendar.SECOND) ||
 					Calendar.getInstance().get(Calendar.MINUTE) > lastRegisteredTime.get(Calendar.MINUTE)){
 				attackTimer--;
-			} else if(attackTimer > 0){
+				lastRegisteredTime = Calendar.getInstance();
+				System.out.println(actor + " attacking for " + attackTimer + " seconds");
+			}
+			if(attackTimer > 0){
 				return;
 			}
 		}
+		if(cooldownTimer > 0){
+			if(Calendar.getInstance().get(Calendar.SECOND) > lastRegisteredTime.get(Calendar.SECOND) ||
+					Calendar.getInstance().get(Calendar.MINUTE) > lastRegisteredTime.get(Calendar.MINUTE)){
+				cooldownTimer--;
+				lastRegisteredTime = Calendar.getInstance();
+				System.out.println(actor + " cooling down for " + cooldownTimer + " seconds");
+			}
+		}
+		
 		actor.attacking = false;
+		actor.initStats();
+		
+		if(!actor.actionFlag){
+			return;
+		}
+		if(actor.actionFlag){
+			actor.actionFlag = false;
+		}
 		
 		if(toggledActions[MOVE_TOWARDS_PLAYER]){
 			moveTowardsPlayer();
@@ -40,6 +64,15 @@ public class MeleeAction implements Action {
 	}
 	
 	public boolean onCollision(Entity entity){
+		if(target != null && !entity.equals(target)){
+			return true;
+		}
+		if(entity instanceof Actor && actor.attacking && ((Actor)entity).attacking){
+			Actor temp = (Actor)entity;
+			actor.hit(entity, actor.getStat("Strength"));
+			temp.hit(actor, temp.getStat("Strength"));
+			return false;
+		}
 		if(actor.attacking){
 			if(actor.hit(entity, actor.getStat("Strength"))){
 			}
@@ -49,8 +82,11 @@ public class MeleeAction implements Action {
 	
 	
 	private void charge(){
+		if(cooldownTimer > 0){
+			return;
+		}
 		if(target != null){
-			if(actor.getDistance(target.getX(), target.getY()) > 128){
+			if(actor.getDistance(target.getX(), target.getY()) > 96){
 				return;
 			}
 		}
@@ -58,7 +94,8 @@ public class MeleeAction implements Action {
 		actor.speedX = (actor.faceRight) ? actor.maxSpeedX : -actor.maxSpeedX;
 		actor.attacking = true;
 		lastRegisteredTime = Calendar.getInstance();
-		attackTimer = 5;
+		attackTimer = 1;
+		cooldownTimer = 2;
 	}
 	
 	private void moveTowardsPlayer(){

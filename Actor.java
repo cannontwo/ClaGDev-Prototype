@@ -13,12 +13,13 @@ public abstract class Actor extends Entity{
 	public abstract void initStats();
 	
 	protected boolean attacking = false;
+	protected HashMap <String, Integer> stats = null;
+	protected boolean actionFlag;
 	
 	public boolean hit(Entity entity, int damage){
-		if(safeTimer > 0 || entity.safeTimer > 0){
+		if(entity.safeTimer > 0){
 			return false;
 		}
-		safeTimer = 50;
 		entity.safeTimer = 50;
 		entity.health -= damage;
 		if(faceRight){
@@ -35,6 +36,27 @@ public abstract class Actor extends Entity{
 			setDead(true);
 		}
 		float speedFactor = ((float)delta / 1000f) * 10f;
+		
+		
+		if(hasGravity) {
+			accelerationY = 6f;
+		}
+		
+		if(jumpTime > 0) {
+			maxSpeedY = 18;
+			accelerationY -= jumpTime * (500 / 12);
+			jumpTime -= delta;
+		} else {
+			maxSpeedY = 40;
+		}
+				
+
+		
+		speedY += accelerationY * speedFactor;
+		if(speedY > maxSpeedY)
+			speedY = maxSpeedY;
+		if(speedY < -maxSpeedY) 
+			speedY = -maxSpeedY;
 		
 		if(attacking){
 			onMove(speedX, speedY, speedFactor);
@@ -70,29 +92,16 @@ public abstract class Actor extends Entity{
 			}
 		}
 				
-		if(hasGravity) {
-			accelerationY = 6f;
-		}
 		
-		if(jumpTime > 0) {
-			maxSpeedY = 18;
-			accelerationY -= jumpTime * (500 / 12);
-			jumpTime -= delta;
-		} else {
-			maxSpeedY = 40;
-		}
-				
+		
 		speedX += accelerationX * speedFactor;
-		speedY += accelerationY * speedFactor;
+		
 				
 		if(speedX > maxSpeedX)
 			speedX = maxSpeedX;
 		if(speedX < -maxSpeedX)
 			speedX = -maxSpeedX;
-		if(speedY > maxSpeedY)
-			speedY = maxSpeedY;
-		if(speedY < -maxSpeedY) 
-			speedY = -maxSpeedY;
+		
 		
 		onMove(speedX, speedY, speedFactor);
 		
@@ -100,6 +109,11 @@ public abstract class Actor extends Entity{
 			safeTimer--;
 		}
 	}
-
+	
+	public String toString(){
+		String returnString = getClass().toString();
+		returnString = returnString.substring(returnString.lastIndexOf('.') + 1);
+		return returnString;
+	}
 
 }

@@ -21,8 +21,8 @@ public class MeleeEnemy extends Actor {
 	public static HashMap<Integer, String> meleeEnemyTypeList;
 	
 	private MeleeAction actionType;
-	private HashMap <String, Integer> stats = null;
 	private int id;
+	
 	public MeleeEnemy(int id) {
 		
 		this.id = id;
@@ -69,6 +69,7 @@ public class MeleeEnemy extends Actor {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
+		actionFlag = true;
 		actionType.act();
 		
 
@@ -112,7 +113,7 @@ public class MeleeEnemy extends Actor {
 			e1.printStackTrace();
 		}
 		
-		System.out.println(tempStats);
+		//System.out.println(tempStats);
 		return tempStats;
 	}
 		
@@ -131,6 +132,8 @@ public class MeleeEnemy extends Actor {
 	@Override
 	public void initStats() {
 		stats = getStatsFromId(id);
+		maxSpeedX = stats.get("MaxSpeedX");
+		maxSpeedY = stats.get("MaxSpeedY");
 		
 	}
 		
