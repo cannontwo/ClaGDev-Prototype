@@ -9,17 +9,18 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Player extends Entity{
 	private Inventory inventory;
+	private Equipment[] equipment;
 	
 	public Player() {
 		health = 100;
 		width = 64;
 		height = 64;
 		inventory = new Inventory();
+		equipment = new Equipment[5];
 		
 		try {
 			image = new Image(SlimeGame.basePath + "res//player.png");
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -29,11 +30,11 @@ public class Player extends Entity{
 		width = 64;
 		height = 64;
 		inventory = new Inventory();
+		equipment = new Equipment[5];
 		
 		try {
 			image = new Image(SlimeGame.basePath + "res//player.png");
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		x = placeX;
@@ -95,46 +96,31 @@ public class Player extends Entity{
 		return new Rectangle(x - MainGameState.TILE_SIZE, y - MainGameState.TILE_SIZE, width + MainGameState.TILE_SIZE, height + MainGameState.TILE_SIZE);
 	}
 
-//	public static Player restorePlayer(File playerSaveFile) {
-//		Player tempPlayer = new Player();
-//		EntityData tempPlayerData = null;
-//		
-//		Gson gson = new Gson();
-//		
-//		try {
-//			Scanner reader = new Scanner(new BufferedReader(new FileReader(playerSaveFile)));
-//			if(reader.hasNext()) {
-//				tempPlayerData = gson.fromJson(reader.next(),EntityData.class);
-//				tempPlayer.x = tempPlayerData.getX();
-//				tempPlayer.y = tempPlayerData.getY();
-//				tempPlayer.inventory = new Inventory(tempPlayerData.getInventoryIdArray());
-//				tempPlayer.health = tempPlayerData.getHealth();
-//			}
-//			reader.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return tempPlayer;
-//	}
-	
-//	public void savePlayer() {
-//		try {
-//			BufferedWriter writer = new BufferedWriter(new FileWriter(SlimeGame.basePath + "//res//playersave.json"));
-//			Gson gson = new Gson();
-//			
-//			EntityData playerData = new EntityData(this);
-//			
-//			writer.write(gson.toJson(playerData));
-//			writer.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	public int[] getInventoryIdArray() {
 		return inventory.getIdArray();
 	}
+
+	public Equipment[] getEquipment() {
+		return equipment;
+	}
 	
+	public void setEquipment(Equipment[] equipment) {
+		for(int i = 0; i < 4; i++) {
+			if(equipment[i] != null) {
+				this.equipment[i] = equipment[i];
+			}
+		}
+	}
+
+	public int[] getEquipmentIdArray() {
+		int[] idArray = new int[equipment.length];
+		for(int i = 0; i < equipment.length; i++) {
+			idArray[i] = -1;
+			if(equipment[i] != null) {
+				idArray[i] = equipment[i].getId();
+			}
+		}
+		return idArray;
+	}
 	
 }

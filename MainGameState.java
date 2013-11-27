@@ -106,12 +106,16 @@ public class MainGameState extends BasicTWLGameState{
 
 	@Override 
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+
 		changedTileList = new HashMap<List<Integer>,Integer>();
 	
 		
 		container.getGraphics().setBackground(new Color(0,100,255));
 		Area.init();
 		Item.initList();
+		Statistics.init();
+		
+		System.out.println(Statistics.getEquipmentStats(0).get("Strength"));
 		
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
@@ -215,6 +219,7 @@ public class MainGameState extends BasicTWLGameState{
 				else; //what do i do when the player dies?
 			}
 		}
+		
 	}
 
 	@Override

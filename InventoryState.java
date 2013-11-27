@@ -20,13 +20,14 @@ public class InventoryState extends BasicTWLGameState{
 	private Inventory inventory;
 	private boolean firstTime = true;
 	private boolean exitFlag = false;
+	private Equipment[] equipment;
 
 
 	@Override
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 		
-		inventoryPanel = new InventoryPanel(inventory, this);
+		inventoryPanel = new InventoryPanel(inventory, equipment, this);
 		
 		rp.add(inventoryPanel);
 		return rp;
@@ -97,6 +98,8 @@ public class InventoryState extends BasicTWLGameState{
 			throws SlickException {
 		if(Permanents.getInventory() != null) {
 			this.inventory = Permanents.getInventory();
+			this.equipment = Entity.getPlayer().getEquipment();
+			
 		}
 		if(!firstTime) {
 			inventoryPanel.updateInventory();

@@ -5,6 +5,7 @@ public class EntityData {
 	private float x;
 	private float y;
 	private int[] inventory;
+	private int[] equipment;
 	private int health;
 	private int entityType;
 	private int itemId;
@@ -16,6 +17,7 @@ public class EntityData {
 		this.health = entity.getHealth();
 		if(entity instanceof Player) {
 			this.inventory = ((Player)(entity)).getInventoryIdArray();
+			this.equipment = ((Player)(entity)).getEquipmentIdArray();
 			this.entityType = EntityData.PLAYER;
 		} else if(entity instanceof Item) {
 			this.itemId = ((Item)(entity)).getId();
@@ -65,9 +67,20 @@ public class EntityData {
 		return this.itemId;
 	}
 	
-	
+	public int[] getEquipment() {
+		return equipment;
+	}
+
+	public void setEquipment(int[] equipment) {
+		this.equipment = equipment;
+	}
+
+
+
+
 	public static final int PLAYER = 0;
 	public static final int ITEM = 1;
+	public static final int EQUIPMENT = 2;
 	public static final int OTHER = 99;
 
 }

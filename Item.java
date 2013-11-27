@@ -16,8 +16,8 @@ import com.google.gson.reflect.TypeToken;
 
 public class Item extends Entity{
 	
-	private int id;
-	private boolean pickedUp = false;
+	protected int id;
+	protected boolean pickedUp = false;
 	public static HashMap<Integer,String> itemList;
 	
 	public Item() {

@@ -49,7 +49,7 @@ public abstract class Entity {
 	//Can the entity jump?
 	protected boolean canJump = false;
 	//Is the entity dead?
-	private boolean dead = false;
+	protected boolean dead = false;
 	//Entity health
 	protected int health = 20;
 	//Image to display
@@ -62,7 +62,7 @@ public abstract class Entity {
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
 	
 	//Delay so all the items don't get thrown at once
-	private short itemThrowDelay = 0;
+	protected short itemThrowDelay = 0;
 	
 	//Static list of all entities
 	public static ArrayList<Entity> entityList = new ArrayList<Entity>();
