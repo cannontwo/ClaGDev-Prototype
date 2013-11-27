@@ -113,7 +113,6 @@ public class MainGameState extends BasicTWLGameState{
 		Area.init();
 		Item.initList();
 		MeleeEnemy.initList();
-		MeleeAction.initMeleeActions();
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");

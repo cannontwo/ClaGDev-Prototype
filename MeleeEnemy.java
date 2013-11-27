@@ -16,36 +16,36 @@ import org.newdawn.slick.state.StateBasedGame;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class MeleeEnemy extends Entity {
+public class MeleeEnemy extends Actor {
 	
-	public static HashMap<Integer, String> meleeEnemyList;
+	public static HashMap<Integer, String> meleeEnemyTypeList;
 	
 	private MeleeAction actionType;
-	private HashMap <String,Integer> stats = null;
+	private HashMap <String, Integer> stats = null;
 	private int id;
 	public MeleeEnemy(int id) {
+		
 		this.id = id;
-		stats = getStatsFromId(id);
-		actionType = new MeleeAction(this, stats.get("MeleeAction"));
+		actionType = new MeleeAction(this);
+		initStats();
 		maxSpeedX = stats.get("MaxSpeedX");
 		maxSpeedY = stats.get("MaxSpeedY");
 		width = height = 32;
 		try {
-			setImage(SlimeGame.basePath + "res//" + meleeEnemyList.get(id)+ ".png");
+			setImage(SlimeGame.basePath + "res//" + meleeEnemyTypeList.get(id)+ ".png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		itemsPending.add(new Item(id));
 	}
 	
 	public static void initList(){
-		meleeEnemyList = new HashMap<Integer,String>();
+		meleeEnemyTypeList = new HashMap<Integer,String>();
 		Type mapType = new TypeToken<HashMap<Integer,String>>() {}.getType();
 		Gson myGson = new Gson();
 		
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(SlimeGame.basePath + "data//meleeEnemies.json"));
-			meleeEnemyList = myGson.fromJson(reader.readLine(), mapType);
+			meleeEnemyTypeList = myGson.fromJson(reader.readLine(), mapType);
 			reader.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -70,6 +70,9 @@ public class MeleeEnemy extends Entity {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
 		actionType.act();
+		
+
+		
 	}
 
 	@Override
@@ -100,9 +103,10 @@ public class MeleeEnemy extends Entity {
 		Gson myGson = new Gson();
 		Type hashType = new TypeToken<HashMap<String, Integer>>() {}.getType();
 		try {
-			Scanner reader = new Scanner(new BufferedReader(new FileReader(SlimeGame.basePath + "data//" + meleeEnemyList.get(id) + ".json")));
-			if(reader.hasNext()){
+			Scanner reader = new Scanner(new BufferedReader(new FileReader(SlimeGame.basePath + "data//" + meleeEnemyTypeList.get(id) + ".json")));
+			while(reader.hasNext()){
 				tempStats = myGson.fromJson(reader.next(), hashType);
+				actionType.toggleActions(tempStats.get("MeleeAction"));
 			}
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -111,7 +115,7 @@ public class MeleeEnemy extends Entity {
 		System.out.println(tempStats);
 		return tempStats;
 	}
-	
+		
 	public int getStat(String stat){
 		return stats.get(stat);
 	}
@@ -123,5 +127,14 @@ public class MeleeEnemy extends Entity {
 	public HashMap<String, Integer> getStats(){
 		return stats;
 	}
+
+	@Override
+	public void initStats() {
+		stats = getStatsFromId(id);
+		
+	}
+		
+	
+	
 
 }

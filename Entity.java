@@ -58,7 +58,7 @@ public abstract class Entity {
 	protected boolean turningLeft = false;
 	protected boolean turningRight = false;
 	
-	protected int timer = 0;
+	protected int safeTimer = 0;
 	
 	//List of items to be thrown
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
@@ -138,8 +138,8 @@ public abstract class Entity {
 		
 		onMove(speedX, speedY, speedFactor);
 		
-		if(timer > 0){
-			timer--;
+		if(safeTimer > 0){
+			safeTimer--;
 		}
 	}
 	
@@ -240,7 +240,7 @@ public abstract class Entity {
 		item.setY((int) this.getY() - 5);
 		item.setSpeedY(-15);
 		if(item.canBeThrown()){
-			item.setAutoRemoveTimer(1000);
+			item.setAutoRemoveTimer(45);
 			Entity.entityList.add(item);
 			itemsPending.remove(0);
 		}
@@ -492,22 +492,7 @@ public abstract class Entity {
 		return returnEntities;
 	}
 	
-	public boolean hit(Entity entity, int damage){
-		if(timer > 0 || entity.timer > 0){
-			return false;
-		}
-		timer = 50;
-		entity.timer = 50;
-		entity.health -= damage;
-		if(faceRight){
-			entity.speedX = entity.maxSpeedX;
-		}
-		else
-			entity.speedX = -maxSpeedX;
-		entity.speedY = -maxSpeedY;
-		return true;
-	}
-	
+		
 	public double getDistance(float x, float y) {
 		float a = this.x + this.width / 2;
 		float b = this.y + this.height / 2;

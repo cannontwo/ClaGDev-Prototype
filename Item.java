@@ -3,6 +3,7 @@ package com.cannon.basegame;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Type;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import org.newdawn.slick.GameContainer;
@@ -20,6 +21,9 @@ public class Item extends Entity{
 	private boolean pickedUp = false;
 	public int autoRemoveTimer = -1;
 	public static HashMap<Integer,String> itemList;
+	
+	private Calendar lastRegisteredTime;
+	
 	
 	public Item() {
 		this(0);
@@ -45,9 +49,11 @@ public class Item extends Entity{
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		if(autoRemoveTimer == -1 || autoRemoveTimer > 250){
+		if(autoRemoveTimer == -1 || autoRemoveTimer > 15){
 			g.drawImage(image, x, y);
-		} else if(autoRemoveTimer % 10 != 0){
+			return;
+		}
+		if(autoRemoveTimer % 3 != 0){
 			g.drawImage(image, x, y);
 		}
 	}
@@ -80,10 +86,20 @@ public class Item extends Entity{
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		super.update(container, game, delta);
-		if(autoRemoveTimer != -1){
-			if(autoRemoveTimer-- == 0){
-				setDead(true);
-			}
+		if(autoRemoveTimer == -1){
+			return;
+		}
+		if(lastRegisteredTime.get(Calendar.SECOND) < Calendar.getInstance().get(Calendar.SECOND) ||
+			lastRegisteredTime.get(Calendar.MINUTE) < Calendar.getInstance().get(Calendar.MINUTE) ||
+			lastRegisteredTime.get(Calendar.HOUR) < Calendar.getInstance().get(Calendar.HOUR) ||
+			lastRegisteredTime.get(Calendar.DAY_OF_YEAR) < Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){ //hopefully nobody pauses the game for over a year
+				autoRemoveTimer--;
+				lastRegisteredTime = Calendar.getInstance();
+			
+		}
+
+		if(autoRemoveTimer <= 0){
+			setDead(true);
 		}
 	}
 	
@@ -151,6 +167,7 @@ public class Item extends Entity{
 	
 	public void setAutoRemoveTimer(int time){
 		autoRemoveTimer = time;
+		lastRegisteredTime = Calendar.getInstance();
 	}
 
 

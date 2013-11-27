@@ -71,7 +71,7 @@ public class EntityData {
 	
 	public static final int PLAYER = 0;
 	public static final int ITEM = 1;
-	public static final int MELEE_ENEMY = 2;
+	public static final int MELEE_ENEMY = 3;
 	public static final int OTHER = 99;
 
 }
