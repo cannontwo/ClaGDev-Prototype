@@ -70,7 +70,7 @@ public class Item extends Entity{
 		for(int i = 0; i < itemList.size(); i++) {
 			System.out.print(itemList.get(i) + " ");
 		}
-		System.out.println();
+		System.out.println(itemList.get(100));
 	}
 	
 	@Override

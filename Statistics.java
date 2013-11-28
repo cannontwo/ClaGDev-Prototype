@@ -40,7 +40,7 @@ public class Statistics {
 	}
 
 	public static HashMap<String,Integer> getEquipmentStats(int id) {
-		return equipmentStatisticsList.get(0);
+		return equipmentStatisticsList.get(id);
 	}
 	
 	public static HashMap<String,Integer> getEntityStats(String key) {

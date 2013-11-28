@@ -36,6 +36,7 @@
         <area name="icon.feather" xywh="29,0,32,33"/>
         <area name="icon.rock" xywh="63,0,31,34"/>
         <area name="icon.stick" xywh="102,0,29,35"/>
+        <area name="icon.spear" xywh="135,0,30,30"/>
     </images>
     <fontDef name="normal" filename="font.fnt" color="#FFFFFF" default="true">
         <fontParam if="error" color="red"/>

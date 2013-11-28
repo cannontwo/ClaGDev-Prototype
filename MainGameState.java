@@ -115,7 +115,7 @@ public class MainGameState extends BasicTWLGameState{
 		Item.initList();
 		Statistics.init();
 		
-		System.out.println(Statistics.getEquipmentStats(0).get("Strength"));
+//		System.out.println(Statistics.getEquipmentStats(100).get("EquipmentType"));
 		
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
