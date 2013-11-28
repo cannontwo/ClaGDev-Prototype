@@ -27,7 +27,7 @@ public class InventoryState extends BasicTWLGameState{
 	protected RootPane createRootPane() {
 		RootPane rp = super.createRootPane();
 		
-		inventoryPanel = new InventoryPanel(inventory, equipment, this);
+		inventoryPanel = new InventoryPanel(inventory, this);
 		
 		rp.add(inventoryPanel);
 		return rp;

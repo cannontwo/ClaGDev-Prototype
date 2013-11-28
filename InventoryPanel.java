@@ -10,14 +10,12 @@ import de.matthiasmann.twl.Widget;
 public class InventoryPanel extends Widget {
 
 	private Inventory inventory;
-	private Equipment[] equipment;
 	
 	private InventoryState invState;
 	
 	private int numSlotsX = 4;
 	private int numSlotsY = 4;
 	private final ItemSlot[] slots;
-	private ItemSlot[] equipmentSlots;
 	
 	private int slotSpacing;
 	
@@ -31,14 +29,11 @@ public class InventoryPanel extends Widget {
 	
 	private RecipeBook recipeBook;
 
-
-	public InventoryPanel(Inventory inventory, Equipment[] equipment, InventoryState state) {
+	public InventoryPanel(Inventory inventory, InventoryState state) {
 		recipeBook = new RecipeBook();
 		this.inventory = inventory;
-		this.equipment = equipment;
 		this.invState=state;
 		this.slots = new ItemSlot[numSlotsX * numSlotsY];
-		this.equipmentSlots = new ItemSlot[4];
 		
 		ItemSlot.DragListener listener = new ItemSlot.DragListener() {
 
@@ -70,18 +65,6 @@ public class InventoryPanel extends Widget {
 				slots[i].setItem(this.inventory.get(i));
 			} catch(NullPointerException e) {
 				slots[i].setItem(new Item());
-			}
-		}
-		
-		for(int i = 0; i < equipmentSlots.length; i++) {
-			equipmentSlots[i] = new ItemSlot();
-			equipmentSlots[i].setListener(listener);
-			add(equipmentSlots[i]);
-			
-			try {
-				equipmentSlots[i].setItem(this.equipment[i]);
-			} catch(NullPointerException e) {
-				equipmentSlots[i].setItem(new Equipment());
 			}
 		}
 		
@@ -177,23 +160,6 @@ public class InventoryPanel extends Widget {
 			y += slotHeight + slotSpacing;
 		}
 		
-		int y = getInnerY() + slotHeight * 2;
-		for(int col = 0,
-				x = getInnerX() + 20; 
-				col < 2; col++) {
-			equipmentSlots[col].adjustSize();
-			equipmentSlots[col].setPosition(x,y);
-			x += slotWidth + slotSpacing;
-		}
-		
-		for(int col = 2,
-				x = getInnerX() + 20 + ((slotWidth + slotSpacing) * 3); 
-				col < 4; col++) {
-			equipmentSlots[col].adjustSize();
-			equipmentSlots[col].setPosition(x,y);
-			x += slotWidth + slotSpacing;
-		}
-		
 		recipeSlot1.adjustSize();
 		recipeSlot1.setPosition(getInnerX() + getWidth() / 2 - slotWidth / 2,20);
 		
@@ -256,14 +222,7 @@ public class InventoryPanel extends Widget {
 				System.out.println("Dropping");
 			} 
 			else if(!(contains(evt.getMouseX(), evt.getMouseY())) && dropSlot == null){
-				if(dragSlot.getItem() instanceof Equipment) {
-					for(int num = 0;num < equipment.length; num++){
-						if(dragSlot.getItem() == equipment[num])
-							equipment[num] = null;
-					}
-				} else {
-					inventory.remove(dragSlot.getItem());
-				}
+				inventory.remove(dragSlot.getItem());
 				Entity.getPlayer().itemsPending.add(dragSlot.getItem());
 				dragSlot.setItem(null);
 				dragSlot.findIcon();
@@ -296,25 +255,9 @@ public class InventoryPanel extends Widget {
 				slots[i].setItem(new Item());
 			}
 		}
-		
-		for(int i = 0; i < equipmentSlots.length; i++) {
-			try {
-				equipmentSlots[i].setItem(this.equipment[i]);
-				equipmentSlots[i].findIcon();
-			} catch(NullPointerException e) {
-				equipmentSlots[i].setItem(new Item());
-			}
-		}
 	}
 	
 	public void leave() {
-		for(int i = 0; i < equipmentSlots.length; i++) {
-			if(!(equipmentSlots[i].getItem() instanceof Equipment)) {
-				inventory.add(equipmentSlots[i].getItem());
-				equipmentSlots[i].setItem(null);
-			}
-			equipment[i] = (Equipment) equipmentSlots[i].getItem();
-		}
 		for(int i = 0; i < slots.length; i++) {
 			inventory.set(i,slots[i].getItem());
 		}
