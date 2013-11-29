@@ -112,7 +112,6 @@ public class MainGameState extends BasicTWLGameState{
 		
 		Area.init();
 		Item.initList();
-		MeleeEnemy.initList();
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
@@ -194,7 +193,6 @@ public class MainGameState extends BasicTWLGameState{
 		if(developerMode){
 			Entity.getPlayer().setHealth(150);
 		}
-		//for(EntityCollision entityCollision : EntityCollision.entityCollisionList) {
 		while(EntityCollision.entityCollisionList.size() > 0){
 			EntityCollision entityCollision = EntityCollision.entityCollisionList.pop();
 			Entity entityA = entityCollision.a;
@@ -211,7 +209,6 @@ public class MainGameState extends BasicTWLGameState{
 				entityB.onCollision(entityA);
 			}	
 		}
-		//EntityCollision.entityCollisionList.clear();
 		
 		if(changeState) {
 			game.enterState(SlimeGame.INVENTORYSTATE);
@@ -285,19 +282,6 @@ public class MainGameState extends BasicTWLGameState{
 			break;
 		case Input.KEY_Q:
 			exitFlag = true;
-			break;
-		case Input.KEY_P:
-			if(!developerMode){
-				break;
-			}
-			rand = new Random();
-			MeleeEnemy newEnemy = new MeleeEnemy(0);
-			newEnemy.setX(rand.nextInt((Area.getAreaControl().getMap(0).getWidth() - 1) * MainGameState.TILE_SIZE));
-			newEnemy.setY(10);
-			Entity.entityList.add(newEnemy);
-			break;
-		case Input.KEY_R:
-			player.doAction();
 			break;
 		}
 	}

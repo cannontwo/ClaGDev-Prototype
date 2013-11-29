@@ -20,9 +20,6 @@ public class EntityData {
 		} else if(entity instanceof Item) {
 			this.id = ((Item)(entity)).getId();
 			this.entityType = EntityData.ITEM;
-		} else if(entity instanceof MeleeEnemy){
-			this.id = ((MeleeEnemy)entity).getId();
-			this.entityType = EntityData.MELEE_ENEMY;
 		} else {
 			this.entityType = EntityData.OTHER;
 		}
@@ -71,7 +68,6 @@ public class EntityData {
 	
 	public static final int PLAYER = 0;
 	public static final int ITEM = 1;
-	public static final int MELEE_ENEMY = 3;
 	public static final int OTHER = 99;
 
 }

@@ -468,10 +468,6 @@ public abstract class Entity {
 					tempItem.setId(tempEntityData.getId());
 					addingEntity = tempItem;
 					break;
-				case EntityData.MELEE_ENEMY:
-					MeleeEnemy meleeEnemy = new MeleeEnemy(tempEntityData.getId());
-					addingEntity = meleeEnemy;
-					break;
 				default:
 					addingEntity = new Item();
 					break;
