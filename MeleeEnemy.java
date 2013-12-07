@@ -27,5 +27,14 @@ public class MeleeEnemy extends Enemy {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public boolean onCollision(Entity entity){
+		if(actionFlag){
+			actionType.onCollision(entity);
+		}
+		return super.onCollision(entity);
+	}
+	
 
 }

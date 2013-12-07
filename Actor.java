@@ -10,6 +10,7 @@ public abstract class Actor extends Entity {
 
 	public Action actionType;
 	public boolean actionFlag;
+	public boolean attacking = false;
 	public HashMap<String, Integer> stats;
 	protected int strength = 0;
 	
@@ -21,9 +22,9 @@ public abstract class Actor extends Entity {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		//if(actionFlag){
-			actionType.act();
-		//}
+		if(actionFlag){
+			actionType.act(delta);
+		}
 	}
 
 	@Override
@@ -40,7 +41,23 @@ public abstract class Actor extends Entity {
 		stats.put("height", 32);
 		stats.put("health", 25);
 		stats.put("strength", 10);
+		stats.put("maxSpeedX", 20);
+		stats.put("maxSpeedY", 20);
 		return stats;
+	}
+	
+	protected void hit(Entity entity){
+		if(entity.safeTimer > 0){
+			return;
+		}
+		int netDamage = strength - entity.defense;
+		if(netDamage < 0){
+			netDamage = 0;
+		}
+		entity.health -= netDamage;
+		entity.speedX = (faceRight) ? entity.maxSpeedX : -entity.maxSpeedX;
+		entity.safeTimer = 500;
+		entity.speedY = -10;
 	}
 	
 	public abstract void initStats();

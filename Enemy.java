@@ -26,6 +26,9 @@ public abstract class Enemy extends Actor {
 	protected int id;
 	protected String name;
 	
+	public Enemy(){
+		this(69);
+	}
 	public Enemy(int id) {
 		this.id = id;
 		name = enemyTypeList.get(id);
@@ -36,6 +39,8 @@ public abstract class Enemy extends Actor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		actionFlag = true;
+		
 		
 	}
 
@@ -43,12 +48,13 @@ public abstract class Enemy extends Actor {
 	public void initStats() {
 		stats = new HashMap<String, Integer>();
 		stats.putAll(Actor.defaultStats());
-		System.out.println(name);
 		stats.putAll(Statistics.getEntityStats(name));
 		width = stats.get("width");
 		height = stats.get("height");
 		health = stats.get("health");
 		strength = stats.get("strength");
+		maxSpeedX = stats.get("maxSpeedX");
+		maxSpeedY = stats.get("maxSpeedY");
 	}
 	
 	@Override
@@ -75,11 +81,15 @@ public abstract class Enemy extends Actor {
 
 		
 	}
-	
+	@Override
+	public boolean onCollision(Entity entity){
+		passiveActionType.onCollision(entity);
+		return true;
+	}
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		passiveActionType.act();
+		passiveActionType.act(delta);
 	}
 
 	public static void initEnemyList(){
@@ -94,6 +104,11 @@ public abstract class Enemy extends Actor {
 		} catch(FileNotFoundException e) {
 			
 		}
+	}
+	
+	@Override
+	public int getId(){
+		return id;
 	}
 	
 }

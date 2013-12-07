@@ -7,13 +7,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class Player extends Entity{
+public class Player extends Actor{
 	private Inventory inventory;
 	
 	public Player() {
-		health = 100;
-		width = 64;
-		height = 64;
+		initStats();
 		inventory = new Inventory();
 		
 		try {
@@ -103,6 +101,24 @@ public class Player extends Entity{
 
 	public int[] getInventoryIdArray() {
 		return inventory.getIdArray();
+	}
+
+	@Override
+	public void initStats() {
+		stats = Actor.defaultStats();
+		stats.put("width", 64);
+		stats.put("height", 62);
+		stats.put("health", 100);
+		width = stats.get("width");
+		height = stats.get("height");
+		health = stats.get("health");
+		strength = stats.get("strength");
+	}
+
+	@Override
+	public void initActions() {
+		//actionType = equipment.getAction(); We need equipment
+		
 	}
 	
 	

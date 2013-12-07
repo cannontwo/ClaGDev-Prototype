@@ -59,6 +59,7 @@ public abstract class Entity {
 	protected boolean turningRight = false;
 	
 	protected int safeTimer = 0;
+	public int defense = 0;
 	
 	//List of items to be thrown
 	public ArrayList<Item> itemsPending = new ArrayList<Item>();
@@ -139,7 +140,7 @@ public abstract class Entity {
 		onMove(speedX, speedY, speedFactor);
 		
 		if(safeTimer > 0){
-			safeTimer--;
+			safeTimer -= delta;
 		}
 	}
 	
@@ -240,7 +241,7 @@ public abstract class Entity {
 		item.setY((int) this.getY() - 5);
 		item.setSpeedY(-15);
 		if(item.canBeThrown()){
-			item.setAutoRemoveTimer(45);
+			item.setAutoRemoveTimer(30000);
 			Entity.entityList.add(item);
 			itemsPending.remove(0);
 		}
@@ -467,6 +468,10 @@ public abstract class Entity {
 					Item tempItem = new Item();
 					tempItem.setId(tempEntityData.getId());
 					addingEntity = tempItem;
+					break;
+				case EntityData.MELEE_ENEMY:
+					MeleeEnemy tempEnemy = new MeleeEnemy(tempEntityData.getId());
+					addingEntity = tempEnemy;
 					break;
 				default:
 					addingEntity = new Item();
