@@ -109,9 +109,11 @@ public class MainGameState extends BasicTWLGameState{
 		changedTileList = new HashMap<List<Integer>,Integer>();
 	
 		
-		
 		Area.init();
 		Item.initList();
+		Enemy.initEnemyList();
+		Statistics.init();
+		
 		TiledMap map = Area.getAreaControl().getMap(0);
 		
 		LevelInit levelData = new LevelInit(Area.getAreaControl().getLevelDataFile().substring(0,Area.getAreaControl().getLevelDataFile().length()-3) + "json");
@@ -146,11 +148,15 @@ public class MainGameState extends BasicTWLGameState{
 		mapHeight = map.getHeight() * map.getTileHeight();
 		camera = new Camera(map, mapWidth, mapHeight);
 		container.getGraphics().setBackground(new Color(0,100,255));
+		
+		MeleeEnemy me = new MeleeEnemy(69);
+		me.setX( (int) Entity.getPlayer().getX());
+		me.setY(100);
+		Entity.entityList.add(me);
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		
 		if(!firstTime) {
 			
 			camera.translate(g, player);

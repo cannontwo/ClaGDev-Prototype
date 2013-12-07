@@ -89,12 +89,10 @@ public class Item extends Entity{
 		if(autoRemoveTimer == -1){
 			return;
 		}
-		if(lastRegisteredTime.get(Calendar.SECOND) < Calendar.getInstance().get(Calendar.SECOND) ||
-			lastRegisteredTime.get(Calendar.MINUTE) < Calendar.getInstance().get(Calendar.MINUTE) ||
-			lastRegisteredTime.get(Calendar.HOUR) < Calendar.getInstance().get(Calendar.HOUR) ||
-			lastRegisteredTime.get(Calendar.DAY_OF_YEAR) < Calendar.getInstance().get(Calendar.DAY_OF_YEAR)){ //hopefully nobody pauses the game for over a year
+		if(Action.secondHasPassed(lastRegisteredTime)){ //hopefully nobody pauses the game for over a year
 				autoRemoveTimer--;
 				lastRegisteredTime = Calendar.getInstance();
+				System.out.println(autoRemoveTimer);
 			
 		}
 
