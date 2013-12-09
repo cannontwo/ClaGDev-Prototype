@@ -49,13 +49,9 @@ public abstract class Enemy extends Actor {
 		stats = new HashMap<String, Integer>();
 		stats.putAll(Actor.defaultStats());
 		stats.putAll(Statistics.getEntityStats(name));
-		width = stats.get("width");
-		height = stats.get("height");
-		health = stats.get("health");
-		strength = stats.get("strength");
-		maxSpeedX = stats.get("maxSpeedX");
-		maxSpeedY = stats.get("maxSpeedY");
+		Actor.setFields(this, stats);
 	}
+	
 	
 	@Override
 	public void initActions() {

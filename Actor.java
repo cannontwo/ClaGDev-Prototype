@@ -4,7 +4,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Actor extends Entity {
 
@@ -12,7 +14,7 @@ public abstract class Actor extends Entity {
 	public boolean actionFlag;
 	public boolean attacking = false;
 	public HashMap<String, Integer> stats;
-	protected int strength = 0;
+	public int strength = 0;
 	
 	public Actor() {
 		actionFlag = false;
@@ -43,7 +45,30 @@ public abstract class Actor extends Entity {
 		stats.put("strength", 10);
 		stats.put("maxSpeedX", 20);
 		stats.put("maxSpeedY", 20);
+		stats.put("defense", 0);
 		return stats;
+	}
+	
+	public static void setFields(Actor actor, HashMap<String, Integer> statsMap){
+		Field[] fields = actor.getClass().getFields();
+		for(Map.Entry<String, Integer> entry : statsMap.entrySet()){
+			for(Field field: fields){
+				if(entry.getKey().equals(field.getName())){
+					try {
+						field.setInt(actor, entry.getValue());
+						System.out.println("Set "+ actor + "'s " + field.getName() + " to " + entry.getValue());
+						break;
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
 	}
 	
 	protected void hit(Entity entity){

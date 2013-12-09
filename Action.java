@@ -64,7 +64,6 @@ public abstract class Action {
 			return false;
 		}
 		actor.actionFlag = false;
-		System.out.println("Action off");
 		return true;
 	}
 

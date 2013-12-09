@@ -20,8 +20,8 @@ import com.google.gson.Gson;
 
 public abstract class Entity {
 	//Size
-	protected int width = 0;
-	protected int height = 0;
+	public int width = 0;
+	public int height = 0;
 	//Position
 	protected float x = 0;
 	protected float y = 0;
@@ -29,8 +29,8 @@ public abstract class Entity {
 	protected double speedX = 0;
 	protected double speedY = 0;
 	//Maximum Speed
-	protected double maxSpeedX = 27;
-	protected double maxSpeedY = 35;
+	public double maxSpeedX = 27;
+	public double maxSpeedY = 35;
 	//jumpTime controls Jump speed and max time
 	protected double jumpTime = 0;
 	//Acceleration
@@ -51,7 +51,7 @@ public abstract class Entity {
 	//Is the entity dead?
 	private boolean dead = false;
 	//Entity health
-	protected int health = 20;
+	public int health = 20;
 	//Image to display
 	protected Image image;
 	//Faster turn than run

@@ -36,5 +36,9 @@ public class MeleeEnemy extends Enemy {
 		return super.onCollision(entity);
 	}
 	
+	@Override
+	public String toString(){
+		return name;
+	}
 
 }

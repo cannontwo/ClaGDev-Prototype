@@ -107,12 +107,9 @@ public class Player extends Actor{
 	public void initStats() {
 		stats = Actor.defaultStats();
 		stats.put("width", 64);
-		stats.put("height", 62);
+		stats.put("height", 64);
 		stats.put("health", 100);
-		width = stats.get("width");
-		height = stats.get("height");
-		health = stats.get("health");
-		strength = stats.get("strength");
+		Actor.setFields(this, stats);
 	}
 
 	@Override
@@ -121,5 +118,9 @@ public class Player extends Actor{
 		
 	}
 	
+	@Override
+	public String toString(){
+		return "Player";
+	}
 	
 }
