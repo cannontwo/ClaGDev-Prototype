@@ -85,6 +85,10 @@ public abstract class Actor extends Entity {
 		entity.speedY = -10;
 	}
 	
+	public HashMap<String, Integer> getStats(){
+		return stats;
+	}
+	
 	public abstract void initStats();
 	public abstract void initActions();
 

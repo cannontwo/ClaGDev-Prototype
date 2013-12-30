@@ -16,6 +16,7 @@ public class InventoryPanel extends Widget {
 	private int numSlotsX = 4;
 	private int numSlotsY = 4;
 	private final ItemSlot[] slots;
+	private final EquipmentSlot[] equipmentSlots;
 	
 	private int slotSpacing;
 	
@@ -33,8 +34,9 @@ public class InventoryPanel extends Widget {
 	public InventoryPanel(Inventory inventory, InventoryState state) {
 		recipeBook = new RecipeBook();
 		this.inventory = inventory;
-		this.invState=state;
+		this.invState = state;
 		this.slots = new ItemSlot[numSlotsX * numSlotsY];
+		this.equipmentSlots = new EquipmentSlot[4];
 		
 		ItemSlot.DragListener listener = new ItemSlot.DragListener() {
 
@@ -57,6 +59,15 @@ public class InventoryPanel extends Widget {
 			}
 			
 		};
+		
+		for(int i = 0; i < equipmentSlots.length; i++){
+			equipmentSlots[i] = new EquipmentSlot(i);
+			equipmentSlots[i].setListener(listener);
+			add(equipmentSlots[i]);
+			
+			//need to do the try/catch thing below?
+			
+		}
 		
 		for(int i = 0; i < slots.length; i ++) {
 			slots[i] = new ItemSlot();
@@ -179,6 +190,13 @@ public class InventoryPanel extends Widget {
 			y += slotHeight + slotSpacing;
 		}
 		
+		for(int i = 0; i < equipmentSlots.length; i++){
+			int x = i * (slotWidth + slotSpacing) + getInnerX() + getWidth() / 2 - ((numSlotsX / 2) * slotWidth) - (slotSpacing * (numSlotsX - 2) - 10);
+			int y = getInnerY() + 30;
+			equipmentSlots[i].adjustSize();
+			equipmentSlots[i].setPosition(x, y);
+		}
+		
 		recipeSlot1.adjustSize();
 		recipeSlot1.setPosition(getInnerX() + getWidth() / 2 - slotWidth / 2,20);
 		
@@ -236,7 +254,7 @@ public class InventoryPanel extends Widget {
 	void dragStopped(ItemSlot slot, Event evt) {
 		if(dragSlot != null) {
 			dragging(slot, evt);
-			if(dropSlot != null && dropSlot != dragSlot) {
+			if(dropSlot != null && dropSlot != dragSlot && dropSlot.canDrop(dragSlot.getItem())) {
 				Item temp = dropSlot.getItem();
 				dropSlot.setItem(dragSlot.getItem());
 				dragSlot.setItem(temp);
@@ -263,7 +281,7 @@ public class InventoryPanel extends Widget {
 			}
 			dropSlot = slot;
 			if(dropSlot != null) {
-				dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop());
+				dropSlot.setDropState(true, dropSlot == dragSlot || dropSlot.canDrop(dragSlot.getItem()));
 			}
 		}
 		
@@ -283,6 +301,9 @@ public class InventoryPanel extends Widget {
 	public void leave() {
 		for(int i = 0; i < slots.length; i++) {
 			inventory.set(i,slots[i].getItem());
+		}
+		for(int i = 0; i < equipmentSlots.length; i++){
+			inventory.setEquipment(i, (Equipment) equipmentSlots[i].getItem());
 		}
 	}
 	

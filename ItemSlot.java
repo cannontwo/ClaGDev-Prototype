@@ -112,8 +112,8 @@ public class ItemSlot extends Widget{
 		}
 	}
 
-	public boolean canDrop() {
-		return item == null;
+	public boolean canDrop(Item item) {
+		return this.item == null;
 	}
 	
 }

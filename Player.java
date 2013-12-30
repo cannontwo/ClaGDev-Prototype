@@ -114,7 +114,8 @@ public class Player extends Actor{
 
 	@Override
 	public void initActions() {
-		//actionType = equipment.getAction(); We need equipment
+		actionType = inventory.getEquipment()[Equipment.WEAPON].getAction();
+		
 		
 	}
 	

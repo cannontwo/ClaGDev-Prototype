@@ -3,9 +3,11 @@ package com.cannon.basegame;
 
 public class Inventory {
 	private Item[] items;
+	private Equipment[] equippedEquipment;
 	
 	public Inventory() {
 		items = new Item[16];
+		equippedEquipment = new Equipment[4];
 	}
 	
 	public Inventory(int[] idArray) {
@@ -76,5 +78,16 @@ public class Inventory {
 			}
 		}
 		return idArray;
+	}
+	
+	public Equipment[] getEquipment(){
+		return equippedEquipment;
+	}
+	
+	public void setEquipment(int index, Equipment equipment){
+		if(equipment == null){
+			return;
+		}
+		equippedEquipment[index] = equipment;
 	}
 }

@@ -103,6 +103,18 @@
                 <param name="minHeight"><int>55</int></param>
                 <param name="maxHeight"><int>55</int></param>
             </theme>
+            <theme name="equipmentslot" ref="-defaults">
+            	<param name="icons">
+                    <map>
+                        <param name=""><image>icon.*</image></param>
+                    </map>
+                </param>
+                <param name="background"><image>panel-blue</image></param>
+                <param name="minWidth"><int>55</int></param>
+                <param name="maxWidth"><int>55</int></param>
+                <param name="minHeight"><int>55</int></param>
+                <param name="maxHeight"><int>55</int></param>
+            </theme>
             <theme name="button" ref="-defaults">
                 <param name="background"><image>button.background</image></param>
                 <param name="border"><border>10,0</border></param>
