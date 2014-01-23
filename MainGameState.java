@@ -322,6 +322,9 @@ public class MainGameState extends BasicTWLGameState{
 		case Input.KEY_W:
 			player.stopJump();
 			break;
+		case Input.KEY_M:
+			setDeveloperMode(!developerMode);
+			break;
 		}
 	}
 
