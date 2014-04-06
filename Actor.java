@@ -15,6 +15,7 @@ public abstract class Actor extends Entity {
 	public boolean attacking = false;
 	public HashMap<String, Integer> stats;
 	public int strength = 0;
+	protected boolean canControlMovement = true;;
 	
 	public Actor() {
 		actionFlag = false;
@@ -91,5 +92,6 @@ public abstract class Actor extends Entity {
 	
 	public abstract void initStats();
 	public abstract void initActions();
-
+	
+	
 }

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
@@ -13,7 +14,8 @@ import com.google.gson.reflect.TypeToken;
 
 public class Statistics {
 	static HashMap<String, HashMap<String,Integer>> entityStatisticsList; //<Entity Name, <Stat Name, Stat Value>>
-	static HashMap<String, String[]> entityActionsList; //<Entity Name, list of commands>
+	static HashMap<String, String[]> entityActionsList; //<Entity Name, list of actions>
+	static HashMap<String, HashMap<String, HashMap<String, Integer>>[]> newEntityActionsList; //<Entity Name, list of <action, restriction(field name, value)>>
 	private static HashMap<Integer,HashMap<String,Integer>> equipmentStatisticsList;
 
 	public static void init() {
@@ -46,6 +48,24 @@ public class Statistics {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	private void initEntityActionsList(){
+		Type type = new TypeToken<HashMap<String, HashMap<String, HashMap<String, Integer>>[]>>(){}.getType();
+		Gson gson = new Gson();
+		
+		try{
+			Scanner reader = new Scanner(new BufferedReader(new FileReader(new File(SlimeGame.basePath + "data//entityactions.json"))));
+			if(reader.hasNext()){
+				HashMap<String, HashMap<String, HashMap<String, Integer>>[]> temp = gson.fromJson(reader.next(), type);
+				for(Entry<String, HashMap<String, HashMap<String, Integer>>[]> entry: temp.entrySet()){
+					//TO-DO
+				}
+			}
+			reader.close();
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
 	}
 
 	public static HashMap<String,Integer> getEquipmentStats(int id) {

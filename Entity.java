@@ -495,8 +495,8 @@ public abstract class Entity {
 	
 		
 	public double getDistance(float x, float y) {
-		float a = this.x + this.width / 2;
-		float b = this.y + this.height / 2;
+		float a = this.x;
+		float b = this.y + height / 2;
 		return Math.sqrt(Math.pow(a - x, 2) + Math.pow(b - y, 2));
 	}
 

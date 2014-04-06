@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public abstract class Action {
 	
@@ -12,6 +13,9 @@ public abstract class Action {
 	protected int attackTimer = 0;
 	protected int cooldownTimer = 0;
 	protected int delayTimer = 0;
+	
+	/**Restriction for each method called in act**/
+	protected ActionRestrictions[] restrictions;
 	
 	public Action(Actor actor){
 		actions = new ArrayList<Method>();
@@ -52,14 +56,35 @@ public abstract class Action {
 		return returnVars;
 	}
 	
+	public void setActionRestrictions(ArrayList<Method> actions) {
+		restrictions = new ActionRestrictions[actions.size()];
+		for(int index = 0; index < actions.size(); index++){
+			Method method = actions.get(index);
+			ActionRestrictions instance = new ActionRestrictions(method.getName());
+			HashMap<String, Integer> map = getRestrictions(method.getName());
+			instance.setRange(map.get("range"));
+			instance.setTimes(map.get("attackTime"), map.get("cooldownTime"), map.get("delayTime"));
+			instance.setInhibitsMovement(map.get("inhibitsMovement"));
+			instance.setPriority(map.get("priority"));
+			if(actor instanceof Enemy){
+				instance.setTarget(Entity.getPlayer());
+			}
+			restrictions[index] = instance;
+		}
+		
+		restrictions = ActionRestrictions.sortByPriority(restrictions);
+	}
+	
 	protected boolean timersAreDone(int delta) {
 		if(attackTimer > 0){
 			actor.attacking = true;
+			actor.canControlMovement = false;
 			attackTimer -= delta;
 			return false;
 		}
 		if(cooldownTimer > 0){
 			actor.attacking = false;
+			actor.canControlMovement = true;
 			cooldownTimer -= delta;
 			return false;
 		}
@@ -77,6 +102,9 @@ public abstract class Action {
 		return actions.toString();
 	}
 	
-	
+	public HashMap<String, Integer> getRestrictions(String actionName){
+		
+		return null;
+	}
 	
 }

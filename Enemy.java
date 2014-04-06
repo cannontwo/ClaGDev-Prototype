@@ -41,7 +41,6 @@ public abstract class Enemy extends Actor {
 		}
 		actionFlag = true;
 		
-		
 	}
 
 	@Override
@@ -85,7 +84,10 @@ public abstract class Enemy extends Actor {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException{
 		super.update(container, game, delta);
-		passiveActionType.act(delta);
+		if(canControlMovement){
+			passiveActionType.act(delta);
+		}
+		
 	}
 
 	public static void initEnemyList(){
